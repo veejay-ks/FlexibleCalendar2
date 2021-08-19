@@ -1,6 +1,8 @@
 package com.p_v.flexiblecalendar.entity;
 
 /**
+ * To select the Years,Months and Days.
+ *
  * @author p-v
  */
 public class SelectedDateItem {
@@ -9,6 +11,15 @@ public class SelectedDateItem {
     private int month;
     private int year;
 
+    /**
+     * To initialize Year,Month and Day.
+     *
+     * @param year year
+     *
+     * @param  month month
+     *
+     * @param day day
+     */
     public SelectedDateItem(int year, int month, int day) {
         this.year = year;
         this.month = month;
@@ -46,13 +57,21 @@ public class SelectedDateItem {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SelectedDateItem that = (SelectedDateItem) o;
 
-        if (day != that.day) return false;
-        if (month != that.month) return false;
+        if (day != that.day) {
+            return false;
+        }
+        if (month != that.month) {
+            return false;
+        }
         return year == that.year;
 
     }

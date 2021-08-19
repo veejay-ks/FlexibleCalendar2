@@ -5,6 +5,8 @@ import ohos.agp.components.ComponentContainer;
 import ohos.agp.components.PageSliderProvider;
 import ohos.agp.database.DataSetSubscriber;
 import ohos.app.Context;
+import ohos.hiviewdfx.HiLog;
+import ohos.hiviewdfx.HiLogLabel;
 
 /**
  * A PagerAdapter that wraps around another PagerAdapter to handle paging wrap-around.
@@ -12,6 +14,18 @@ import ohos.app.Context;
 public class InfinitePagerAdapter extends PageSliderProvider {
 
     private static final String TAG = "InfinitePagerAdapter";
+    /**
+     * TYPE.
+     */
+    private static final int HILOG_TYPE = 3;
+    /**
+     * DOMAIN.
+     */
+    private static final int HILOG_DOMAIN = 0xD000F00;
+    /**
+     * LABEL.
+     */
+    private static final HiLogLabel LABEL = new HiLogLabel(HILOG_TYPE, HILOG_DOMAIN, TAG);
     private static final boolean DEBUG = true;
     private static final int MAX_VAL = 10000;
 
@@ -19,6 +33,13 @@ public class InfinitePagerAdapter extends PageSliderProvider {
 
     private int fakeCount;
     private Context context;
+    /**
+     * To specify the adapter and context.
+     *
+     * @param adapter adapter
+     *
+     * @param context context
+     */
 
     public InfinitePagerAdapter(PageSliderProvider adapter, Context context) {
         this.adapter = adapter;
@@ -63,7 +84,9 @@ public class InfinitePagerAdapter extends PageSliderProvider {
     }
 
     /**
-     * @return the {@link #getCount()} result of the wrapped adapter
+     * To get the realcount.
+     *
+     * @return the {@link #getCount()} result of the wrapped adapter.
      */
     public int getRealCount() {
         return adapter.getCount();
@@ -98,11 +121,13 @@ public class InfinitePagerAdapter extends PageSliderProvider {
 
     /*
      * End delegation
+     *
+     * @param message message
      */
 
     private void debug(String message) {
         if (DEBUG) {
-            System.out.println(TAG+" "+message);
+            HiLog.info(LABEL, TAG + " " + message);
         }
     }
 
@@ -123,25 +148,4 @@ public class InfinitePagerAdapter extends PageSliderProvider {
     public void registerDataSetObserver(DataSetSubscriber observer) {
         super.removeDataSubscriber(observer);
     }
-
-//
-//    @Override
-//    public void restoreState(Parcel bundle, ClassLoader classLoader) {
-//    }
-//
-//    @Override
-//    public Parcel saveState() {
-//        return adapter.saveState();
-//    }
-
-//    @Override
-//    public float getPageWidth(int position) {
-//        return adapter.getPageWidth(position);
-//    }
-
-    //    @Override
-//    public void setPrimaryItem(ComponentContainer container, int position, Object object) {
-//        adapter.setPrimaryItem(container, position, object);
-//    }
-
 }

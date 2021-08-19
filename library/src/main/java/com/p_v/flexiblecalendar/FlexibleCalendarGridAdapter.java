@@ -4,51 +4,99 @@ import com.p_v.flexiblecalendar.entity.Event;
 import com.p_v.flexiblecalendar.entity.SelectedDateItem;
 import com.p_v.flexiblecalendar.view.BaseCellView;
 import com.p_v.flexiblecalendar.view.IDateCellViewDrawer;
-
 import com.p_v.flexiblecalendar.view.MonthDisplayUtil;
-import com.p_v.flexiblecalendar.view.ResourceUtil;
-import ohos.agp.colors.RgbColor;
 import ohos.agp.components.BaseItemProvider;
 import ohos.agp.components.ComponentContainer;
 import ohos.agp.components.LayoutScatter;
-import ohos.agp.components.element.Element;
-import ohos.agp.components.element.ShapeElement;
 import ohos.agp.utils.Color;
 import ohos.app.Context;
-
 import ohos.agp.components.Component;
-
-
 import java.util.Calendar;
 import java.util.List;
 
 
 /**
- * @author p-v
+ * FlexiCalendarGridAdapter.
  */
 class FlexibleCalendarGridAdapter extends BaseItemProvider {
 
+    /**
+     * SIX_WEEK_DAY_COUNT.
+     */
     private static final int SIX_WEEK_DAY_COUNT = 42;
-
+    /**
+     * year.
+     */
     private int year;
+    /**
+     * month.
+     */
     private int month;
+    /**
+     * context.
+     */
     private Context context;
+    /**
+     * month disply util.
+     */
     private MonthDisplayUtil monthDisplayUtil;
+    /**
+     * calendar.
+     */
     private Calendar calendar;
+    /**
+     * on date cell item click listener.
+     */
     private OnDateCellItemClickListener onDateCellItemClickListener;
+    /**
+     * selected item.
+     */
     private SelectedDateItem selectedItem;
+    /**
+     * user selected date item.
+     */
     private SelectedDateItem userSelectedDateItem;
+    /**
+     * month event fetcher.
+     */
     private MonthEventFetcher monthEventFetcher;
+    /**
+     * cell view drawer.
+     */
     private IDateCellViewDrawer cellViewDrawer;
+    /**
+     * show dates outside month.
+     */
     private boolean showDatesOutsideMonth;
+    /**
+     * decorate dates outside month.
+     */
     private boolean decorateDatesOutsideMonth;
+    /**
+     * disable auto date selection.
+     */
     private boolean disableAutoDateSelection;
 
-
+    /**
+     * flexible calendar grid adapter.
+     *
+     * @param context context
+     *
+     * @param year year
+     *
+     * @param month month
+     *
+     * @param showDatesOutsideMonth showdatesoutsidemonth
+     *
+     * @param decorateDatesOutsideMonth decorateDatesOutsideMonth
+     *
+     * @param startDayOfTheWeek startdayoftheweek
+     *
+     * @param disableAutoDateSelection disableautodateselection
+     */
     public FlexibleCalendarGridAdapter(Context context, int year, int month,
                                        boolean showDatesOutsideMonth, boolean decorateDatesOutsideMonth, int startDayOfTheWeek,
                                        boolean disableAutoDateSelection) {
-        /*super(context);*/
         this.context = context;
         this.showDatesOutsideMonth = showDatesOutsideMonth;
         this.decorateDatesOutsideMonth = decorateDatesOutsideMonth;
@@ -56,10 +104,15 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
         initialize(year, month, startDayOfTheWeek);
     }
 
-    /*public FlexibleCalendarGridAdapter(Context context) {
-        super(context);
-    }*/
-
+    /**
+     * initialize.
+     *
+     * @param year year
+     *
+     * @param month month
+     *
+     * @param startDayOfTheWeek stratdayoftheweek
+     */
     public void initialize(int year, int month, int startDayOfTheWeek) {
         this.year = year;
         this.month = month;
@@ -67,6 +120,11 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
         this.calendar = FlexibleCalendarHelper.getLocalizedCalendar(context);
     }
 
+    /**
+     * get count.
+     *
+     * @return int val
+     */
     @Override
     public int getCount() {
         int weekStartDay = monthDisplayUtil.getWeekStartDay();
@@ -78,40 +136,58 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
                 + toAdd;
     }
 
+    /**
+     * get item.
+     *
+     * @param position position
+     *
+     * @return object
+     */
     @Override
     public Object getItem(int position) {
-        //TODO implement
         int row = position / 7;
         int col = position % 7;
         return monthDisplayUtil.getDayAt(row, col);
     }
 
+    /**
+     * get item id.
+     *
+     * @param position position
+     *
+     * @return position
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     * get component.
+     *
+     * @param position position
+     *
+     * @param convertView convertview
+     *
+     * @param parent parent
+     *
+     * @return basecellview
+     */
     @Override
     public BaseCellView getComponent(int position, Component convertView, ComponentContainer parent) {
         int row = position / 7;
         int col = position % 7;
-        System.out.println(" FlexibleCalendarGridAdapter row&col "+row+" "+col);
         //checking if is within current month
         boolean isWithinCurrentMonth = monthDisplayUtil.isWithinCurrentMonth(row, col);
-        System.out.println(" FlexibleCalendarGridAdapter isWithinCurrentMonth "+isWithinCurrentMonth);
         //compute cell type
         int cellType = BaseCellView.OUTSIDE_MONTH;
-        System.out.println(" FlexibleCalendarGridAdapter cellType "+cellType);
         //day at the current row and col
         int day = monthDisplayUtil.getDayAt(row, col);
         int month = monthDisplayUtil.getMonth();
-        System.out.println(" FlexibleCalendarGridAdapter day "+day+" "+month);
 
         if (isWithinCurrentMonth) {
             //set to REGULAR if is within current month
             cellType = BaseCellView.REGULAR;
-            System.out.println(" FlexibleCalendarGridAdapter cellType "+cellType);
-            System.out.println(" FlexibleCalendarGridAdapter disableAuto "+disableAutoDateSelection);
             if (disableAutoDateSelection) {
                 if (userSelectedDateItem != null && userSelectedDateItem.getYear() == year
                         && userSelectedDateItem.getMonth() == month
@@ -127,7 +203,6 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
                     cellType = BaseCellView.SELECTED;
                 }
             }
-            System.out.println("getcompo inside FCGA 2.2");
             if (calendar.get(Calendar.YEAR) == year
                     && calendar.get(Calendar.MONTH) == month
                     && calendar.get(Calendar.DAY_OF_MONTH) == day) {
@@ -140,36 +215,35 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
                 }
             }
         }
-        System.out.println("getcompo inside FCGA 3 empty ");
 
         BaseCellView cellView = cellViewDrawer.getCellView(position, convertView, parent, cellType);
-//        BaseCellView cellView = null;
-        System.out.println("getcompo inside FCGA 4");
         if (cellView == null) {
-            System.out.println("getcompo inside FCGA 4.1");
             cellView = (BaseCellView) convertView;
-            System.out.println("getcompo inside FCGA 4.2 "+cellView);
             if (cellView == null) {
-                LayoutScatter inflate = LayoutScatter.getInstance(context);// LayoutInflater inflate = LayoutInflater.from(context);
+                LayoutScatter inflate = LayoutScatter.getInstance(context);
                 cellView = (BaseCellView) inflate.parse(ResourceTable.Layout_square_cell_layout, parent,false);
             }
-            System.out.println("getcompo inside FCGA 4.3 "+cellView);
         }
-        System.out.println("getcompo inside FCGA 5");
         drawDateCell(cellView, day, cellType);
-        System.out.println("getcompo inside FCGA 6 "+cellView);
         return cellView;
     }
 
+    /**
+     * draw date cell.
+     *
+     * @param cellView cellview
+     *
+     * @param day day
+     *
+     * @param cellType celltype
+     */
     private void drawDateCell(BaseCellView cellView, int day, int cellType) {
         cellView.clearAllStates();
-        System.out.println("drawDateCell inside FCGA 1-- "+cellType+" ");
         if (cellType != BaseCellView.OUTSIDE_MONTH) {
             cellView.setText(String.valueOf(day));
             cellView.setTextSize(50);
             cellView.setTextColor(Color.WHITE);
             cellView.setWidth(200);
-            /*cellView.setOnClickListener(new DateClickListener(day, month, year));*/
             cellView.setClickedListener(new DateClickListener(day, month, year));
 
             // add events
@@ -178,14 +252,11 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
             }
             switch (cellType) {
                 case BaseCellView.SELECTED_TODAY:
-                    System.out.println("VEEJAY EXCV3 FCGA GETSTATE "+BaseCellView.STATE_TODAY);
                     cellView.addState(BaseCellView.STATE_TODAY);
                     cellView.addState(BaseCellView.STATE_SELECTED);
                     break;
                 case BaseCellView.TODAY:
-                    System.out.println("VEEJAY EXCV3 FCGA GETSTATE "+BaseCellView.STATE_TODAY);
                     cellView.addState(BaseCellView.STATE_TODAY);
-//                    cellView.setBackground(getElementFromResourceIdBlue());
                     break;
                 case BaseCellView.SELECTED:
                     cellView.addState(BaseCellView.STATE_SELECTED);
@@ -194,7 +265,6 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
                     cellView.addState(BaseCellView.STATE_REGULAR);
             }
         } else {
-            System.out.println("drawDateCell inside FCGA 2 -- "+showDatesOutsideMonth+" ");
             if (showDatesOutsideMonth) {
                 cellView.setText(String.valueOf(day));
                 cellView.setTextSize(50);
@@ -202,7 +272,6 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
                 cellView.setWidth(200);
                 int[] temp = new int[2];
                 //date outside month and less than equal to 12 means it belongs to next month otherwise previous
-
                 if (day <= 12) {
                     FlexibleCalendarHelper.nextMonth(year, month, temp);
                 } else {
@@ -217,116 +286,208 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
 
                 cellView.addState(BaseCellView.STATE_OUTSIDE_MONTH);
             } else {
-                System.out.println("drawDateCell inside FCGA inside null ");
-                Element element = ResourceUtil.getElementFromResourceId(ohos.global.systemres.ResourceTable.Color_id_color_activated_transparent);
-//                cellView.setBackground(element);//cellView.setBackgroundResource(ohos.R.color.transparent);
                 cellView.setText(null);
                 cellView.setTextSize(50);
                 cellView.setTextColor(Color.WHITE);
                 cellView.setWidth(200);
-                cellView.setClickedListener(null);//cellView.setOnClickListener(null);
-
+                cellView.setClickedListener(null);
             }
         }
-//        cellView.refreshDrawableState();
     }
 
+    /**
+     * get year.
+     *
+     * @return year
+     */
     public int getYear() {
         return year;
     }
 
+    /**
+     * get month.
+     *
+     * @return month
+     */
     public int getMonth() {
         return month;
     }
 
+    /**
+     * set date click listener.
+     *
+     * @param onDateCellItemClickListener ondatecellitemcicklistener
+     */
     public void setOnDateClickListener(OnDateCellItemClickListener onDateCellItemClickListener) {
         this.onDateCellItemClickListener = onDateCellItemClickListener;
     }
 
+    /**
+     * set selected item.
+     *
+     * @param selectedItem selecteddateitem
+     *
+     * @param notify notify
+     *
+     * @param isUserSelected isuserselected
+     */
     public void setSelectedItem(SelectedDateItem selectedItem, boolean notify, boolean isUserSelected) {
         this.selectedItem = selectedItem;
         if (disableAutoDateSelection && isUserSelected) {
             this.userSelectedDateItem = selectedItem;
         }
-        if (notify) notifyDataChanged();//if (notify) notifyDataSetChanged();
+        if (notify) notifyDataChanged();
     }
 
+    /**
+     * get selected item.
+     *
+     * @return selected date item
+     */
     public SelectedDateItem getSelectedItem() {
         return selectedItem;
     }
 
+    /**
+     * set month event fetcher.
+     *
+     * @param monthEventFetcher montheventfetcher
+     */
     void setMonthEventFetcher(MonthEventFetcher monthEventFetcher) {
         this.monthEventFetcher = monthEventFetcher;
     }
 
+    /**
+     * set cell view drawer.
+     *
+     * @param cellViewDrawer cellviewdrawer
+     */
     public void setCellViewDrawer(IDateCellViewDrawer cellViewDrawer) {
         this.cellViewDrawer = cellViewDrawer;
     }
 
+    /**
+     * set show date outside month.
+     *
+     * @param showDatesOutsideMonth showdatesoutsidemonth
+     */
     public void setShowDatesOutsideMonth(boolean showDatesOutsideMonth) {
         this.showDatesOutsideMonth = showDatesOutsideMonth;
-        this.notifyDataChanged();//this.notifyDataSetChanged();
+        this.notifyDataChanged();
     }
 
+    /**
+     * set decorate dates outside month.
+     *
+     * @param decorateDatesOutsideMonth decoratedatesoutsidemont
+     */
     public void setDecorateDatesOutsideMonth(boolean decorateDatesOutsideMonth) {
         this.decorateDatesOutsideMonth = decorateDatesOutsideMonth;
-        this.notifyDataChanged();//this.notifyDataSetChanged();
+        this.notifyDataChanged();
     }
 
+    /**
+     * set disable auto date selection.
+     *
+     * @param disableAutoDateSelection disableAutoDateSelection
+     */
     public void setDisableAutoDateSelection(boolean disableAutoDateSelection) {
         this.disableAutoDateSelection = disableAutoDateSelection;
-        this.notifyDataChanged();//this.notifyDataSetChanged();
+        this.notifyDataChanged();
     }
 
+    /**
+     * set first day Of the week.
+     *
+     * @param firstDayOfTheWeek firstDayOfTheWeek
+     */
     public void setFirstDayOfTheWeek(int firstDayOfTheWeek) {
         monthDisplayUtil = new MonthDisplayUtil(year, month, firstDayOfTheWeek);
-        this.notifyDataChanged();//this.notifyDataSetChanged();
+        this.notifyDataChanged();
     }
 
+    /**
+     * get user selected date item.
+     *
+     * @return user selected date item
+     */
     public SelectedDateItem getUserSelectedItem() {
         return userSelectedDateItem;
     }
 
+    /**
+     * set user selected date item.
+     *
+     * @param selectedItem selecteditem
+     */
     public void setUserSelectedDateItem(SelectedDateItem selectedItem) {
         this.userSelectedDateItem = selectedItem;
-        notifyDataChanged();//notifyDataSetChanged();
+        notifyDataChanged();
     }
 
+    /**
+     * OnDateCellItemClickListener.
+     */
     public interface OnDateCellItemClickListener {
         void onDateClick(SelectedDateItem selectedItem);
     }
 
+    /**
+     * MonthEventFetcher.
+     */
     interface MonthEventFetcher {
         List<? extends Event> getEventsForTheDay(int year, int month, int day);
     }
-    //    private class DateClickListener implements Component.OnClickListener {
+
+    /**
+     * DateClickListener.
+     */
     private class DateClickListener implements Component.ClickedListener {
 
+        /**
+         * iday.
+         */
         private int iDay;
+        /**
+         * imonth.
+         */
         private int iMonth;
+        /**
+         * iyear.
+         */
         private int iYear;
 
+        /**
+         * argument constructor.
+         *
+         * @param day day
+         *
+         * @param month month
+         *
+         * @param year year
+         */
         public DateClickListener(int day, int month, int year) {
             this.iDay = day;
             this.iMonth = month;
             this.iYear = year;
         }
 
-        /*@Override*/
-        public void onClick(final Component v) {
+        /**
+         * onclick.
+         *
+         * @param arg1 arg1
+         */
+        public void onClick(final Component arg1) {
             selectedItem = new SelectedDateItem(iYear, iMonth, iDay);
 
             if (disableAutoDateSelection) {
                 userSelectedDateItem = selectedItem;
             }
-
-            notifyDataChanged();//notifyDataSetChanged();
-
+            notifyDataChanged();
             if (onDateCellItemClickListener != null) {
                 onDateCellItemClickListener.onDateClick(selectedItem);
             }
 
         }
     }
-
 }

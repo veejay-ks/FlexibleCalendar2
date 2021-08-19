@@ -7,16 +7,29 @@ import java.util.Calendar;
 import java.util.Locale;
 
 /**
- * @author p-v
+ * FlexiCalendarHelper.
  */
 public class FlexibleCalendarHelper {
 
-    private final static int mOffset = 3;
     /**
-     * Set the next month for the details passed
+     * M_OFFSET.
+     */
+    private static final int M_OFFSET = 3;
+
+    /**
+     * default constructor.
+     */
+    private FlexibleCalendarHelper(){
+
+    }
+
+    /**
+     * Set the next month for the details passed.
      *
-     * @param year     year
-     * @param month    month
+     * @param year year
+     *
+     * @param month month
+     *
      * @param nextDate next month empty array
      */
     public static void nextMonth(int year, int month, int[] nextDate) {
@@ -31,10 +44,12 @@ public class FlexibleCalendarHelper {
     }
 
     /**
-     * Set the previous month for the details passed
+     * Set the previous month for the details passed.
      *
-     * @param year         year
-     * @param month        month
+     * @param year year
+     *
+     * @param month month
+     *
      * @param previousDate previous month empty array
      */
     public static void previousMonth(int year, int month, int[] previousDate) {
@@ -49,6 +64,8 @@ public class FlexibleCalendarHelper {
     }
 
     /**
+     * Get the array for week days for the current locale.
+     *
      * @return Get the array for week days for the current locale
      */
     public static String[] getWeekDaysList(Context context) {
@@ -57,13 +74,19 @@ public class FlexibleCalendarHelper {
     }
 
     /**
-     * Get the current locale
+     * Get the current locale.
+     *
+     * @param context context
+     *
+     * @return locale
      */
     public static Locale getLocale(Context context) {
         return context.getResourceManager().getConfiguration().getFirstLocale();
     }
 
     /**
+     * get localized calendar.
+     *
      * @return the localized calendar instance
      */
     public static Calendar getLocalizedCalendar(Context context) {
@@ -71,51 +94,59 @@ public class FlexibleCalendarHelper {
     }
 
     /**
-     * Get the number of rows for the provided month
+     * Get the number of rows for the provided month.
      *
      * @param year  year
+     *
      * @param month month
+     *
      * @return number of rows
      */
-    public static int getNumOfRowsForTheMonth(int year, int month, int startDayOfTheWeek) {
+    public static int getNumOfRowsForTheMonth(int year, int month) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, 1);
         return getRowOf(cal.getActualMaximum(Calendar.DAY_OF_MONTH)) + 1;
     }
 
     /**
-     * @return Which row day is in.
+     * get row.
+     *
+     * @param day day
+     *
+     * @return Which row day is in
      */
     public static int getRowOf(int day) {
-        return (day + mOffset - 1) / 7;
+        return (day + M_OFFSET - 1) / 7;
     }
 
     /**
-     * Get number of month difference with the current month
+     * Get number of month difference with the current month.
      *
-     * @param year
-     * @param month
-     * @return
+     * @param year year
+     *
+     * @param month month
+     *
+     * @return int val
      */
     public static int getMonthDifference(int year, int month) {
-        System.out.println("monthDifference stat "+year+" "+month);
         Calendar cal = Calendar.getInstance();
         int currentMonth = cal.get(Calendar.MONTH);
         int currentYear = cal.get(Calendar.YEAR);
-        System.out.println("monthDifference stat second "+currentMonth+" "+currentYear);
-        int x = (currentYear - year) * 12 + currentMonth - month;
-        System.out.println("monthDifference stat second x --- "+x);
-        return x;
+        return  (currentYear - year) * 12 + currentMonth - month;
     }
 
     /**
-     * Get number of month difference between two the start and end month/year
+     * Get number of month difference between two the start and end month/year.
      *
-     * @param startYear
-     * @param startMonth
-     * @param endYear
-     * @param endMonth
-     * @return
+     * @param startYear start year
+     *
+     * @param startMonth start month
+     *
+     * @param endYear end year
+     *
+     * @param endMonth end month
+     *
+     * @return int val
      */
     public static int getMonthDifference(int startYear, int startMonth, int endYear, int endMonth) {
         return (endYear - startYear) * 12 + endMonth - startMonth;

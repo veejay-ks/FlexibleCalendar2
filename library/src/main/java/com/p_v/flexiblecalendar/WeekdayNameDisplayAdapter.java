@@ -1,64 +1,99 @@
 package com.p_v.flexiblecalendar;
 
-import com.p_v.flexiblecalendar.view.BaseCellView;
-import com.p_v.flexiblecalendar.view.IWeekCellViewDrawer;
 import ohos.agp.components.BaseItemProvider;
 import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
 import ohos.agp.render.layoutboost.LayoutBoost;
 import ohos.agp.utils.Color;
 import ohos.app.Context;
-
+import com.p_v.flexiblecalendar.view.BaseCellView;
+import com.p_v.flexiblecalendar.view.IWeekCellViewDrawer;
 import java.text.DateFormatSymbols;
 
 /**
- * @author p-v
+ * WeekdayNameDisplayAdapter class.
  */
 public class WeekdayNameDisplayAdapter extends BaseItemProvider {
 
+    /**
+     * cellViewDrawer.
+     */
     private IWeekCellViewDrawer cellViewDrawer;
+    /**
+     * weekDayArray.
+     */
     private WeekDay[] weekDayArray;
-    private Context mContext;
+    /**
+     * mContext.
+     */
+    private Context weekAdapterContext;
+    /**
+     * viewWidth for text.
+     */
     private int viewWidth;
 
-    public WeekdayNameDisplayAdapter(Context context, int startDayOfTheWeek, int viewWidth) {
+    /**
+     * 2 arg-constructor.
+     *
+     * @param context context
+     *
+     * @param startDayOfTheWeek startDayOfTheWeek
+     *
+     * @param viewWidth viewWidth
+     */
+    public WeekdayNameDisplayAdapter(final Context context, final int startDayOfTheWeek, final int viewWidth) {
         super();
-        mContext = context;
+        weekAdapterContext = context;
         initializeWeekDays(startDayOfTheWeek);
         this.viewWidth = viewWidth;
     }
 
+    /**
+     * get count.
+     *
+     * @return count
+     */
     @Override
     public int getCount() {
         return weekDayArray.length;
     }
 
+    /**
+     * get item.
+     *
+     * @return item
+     */
     @Override
-    public Object getItem(int position) {
+    public Object getItem(final int position) {
         return weekDayArray[position];
     }
 
+    /**
+     * get item id.
+     *
+     * @return id
+     */
     @Override
-    public long getItemId(int position) {
+    public long getItemId(final int position) {
         return position;
     }
 
+    /**
+     * get component.
+     *
+     * @return component
+     */
     @Override
-    public Component getComponent(int position, Component component, ComponentContainer componentContainer) {
-        System.out.println("VIJAY weekDayList 1 -- "+position);
+    public Component getComponent(final int position, final Component component, final ComponentContainer componentContainer) {
         BaseCellView cellView = cellViewDrawer.getCellView(position, component, componentContainer);
-        System.out.println("VIJAY weekDayList CELLVIEW -- "+cellView);
         if (cellView == null) {
-            cellView = (BaseCellView) LayoutBoost.inflate(mContext,ResourceTable.Layout_square_cell_layout,null,false);
+            cellView = (BaseCellView) LayoutBoost.inflate(weekAdapterContext, ResourceTable.Layout_square_cell_layout, null, false);
         }
-        System.out.println("VIJAY weekDayList 2 CELLVIEW -- "+cellView);
         WeekDay weekDay = (WeekDay) getItem(position);
         String weekdayName = cellViewDrawer.getWeekDayName(weekDay.index, weekDay.displayValue); //adding 1 as week days starts from 1 in Calendar
-        System.out.println("VIJAY weekDayList100 -- "+weekdayName+" "+weekdayName);
         if ((weekdayName == null) || weekdayName.equals("")) {
             weekdayName = weekDay.displayValue;
         }
-        System.out.println("VEJAY cellView.getWidth() -- "+ cellView.getWidth());
         cellView.setTextSize(50);
         cellView.setTextColor(Color.WHITE);
         cellView.setWidth(this.viewWidth);
@@ -66,16 +101,29 @@ public class WeekdayNameDisplayAdapter extends BaseItemProvider {
         return cellView;
     }
 
+    /**
+     * Weekday class.
+     */
     public class WeekDay {
-        int index;
-        String displayValue;
+        /**
+         * index.
+         */
+        private int index;
+        /**
+         * displayValue.
+         */
+        private String displayValue;
     }
 
-    private void initializeWeekDays(int startDayOfTheWeek) {
-        DateFormatSymbols symbols = new DateFormatSymbols(FlexibleCalendarHelper.getLocale(mContext));
+    /**
+     * intialize wee days.
+     *
+     * @param startDayOfTheWeek startDayOfTheWeek
+     */
+    private void initializeWeekDays(final int startDayOfTheWeek) {
+        DateFormatSymbols symbols = new DateFormatSymbols(FlexibleCalendarHelper.getLocale(weekAdapterContext));
         String[] weekDayList = symbols.getShortWeekdays(); // weekday list has 8 elements
         weekDayArray = new WeekDay[7];
-        System.out.println("VIJAY weekDayList "+weekDayList.length);
         //reordering array based on the start day of the week
         for (int i = 1; i < weekDayList.length; i++) {
             WeekDay weekDay = new WeekDay();
@@ -86,19 +134,31 @@ public class WeekdayNameDisplayAdapter extends BaseItemProvider {
         }
     }
 
-    public boolean isEnabled(int position) {
-        return false;
-    }
-
-    public void setCellView(IWeekCellViewDrawer cellView) {
+    /**
+     * set cell view.
+     *
+     * @param cellView cellView
+     */
+    public void setCellView(final IWeekCellViewDrawer cellView) {
         this.cellViewDrawer = cellView;
     }
 
+    /**
+     * get cell view.
+     *
+     * @return cell view
+     */
     public IWeekCellViewDrawer getCellViewDrawer() {
         return cellViewDrawer;
     }
 
-    public void setStartDayOfTheWeek(int startDayOfTheWeek) {
+
+    /**
+     * set start day of the week.
+     *
+     * @param startDayOfTheWeek startDayOfTheWeek
+     */
+    public void setStartDayOfTheWeek(final int startDayOfTheWeek) {
         initializeWeekDays(startDayOfTheWeek);
         this.notifyDataChanged();
     }

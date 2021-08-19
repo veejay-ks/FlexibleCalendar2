@@ -1,44 +1,88 @@
 package com.p_v.flexiblecalendar;
 
-import com.p_v.flexiblecalendar.entity.SelectedDateItem;
-import com.p_v.flexiblecalendar.view.ICellViewDrawer;
-import com.p_v.flexiblecalendar.view.IDateCellViewDrawer;
-//import com.p_v.fliexiblecalendar.R;
-import ohos.aafwk.ability.fraction.Fraction;
-import ohos.agp.colors.RgbColor;
 import ohos.agp.components.*;
-import ohos.agp.components.element.ShapeElement;
 import ohos.agp.database.DataSetSubscriber;
 import ohos.agp.render.layoutboost.LayoutBoost;
 import ohos.app.Context;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
-
+import com.p_v.flexiblecalendar.entity.SelectedDateItem;
+import com.p_v.flexiblecalendar.view.ICellViewDrawer;
+import com.p_v.flexiblecalendar.view.IDateCellViewDrawer;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author p-v
+ * MonthViewPagerAdapter class.
  */
 public class MonthViewPagerAdapter extends PageSliderProvider {
 
+    /**
+     * views in pager.
+     */
     public static final int VIEWS_IN_PAGER = 4;
+    /**
+     * tag.
+     */
     static final String GRID_TAG_PREFIX = "111";
-
+    /**
+     * context.
+     */
     private Context context;
+    /**
+     * date adapter.
+     */
     private List<FlexibleCalendarGridAdapter> dateAdapters;
+    /**
+     * date cell item click listener.
+     */
     private FlexibleCalendarGridAdapter.OnDateCellItemClickListener onDateCellItemClickListener;
+    /**
+     * month event fetcher.
+     */
     private FlexibleCalendarGridAdapter.MonthEventFetcher monthEventFetcher;
+    /**
+     * cell View Drawer.
+     */
     private IDateCellViewDrawer cellViewDrawer;
-    private int gridViewHorizontalSpacing;
-    private int gridViewVerticalSpacing;
+    /**
+     * show dates outside month.
+     */
     private boolean showDatesOutsideMonth;
+    /**
+     * refresh month view adapter.
+     */
     private boolean refreshMonthViewAdpater;
+    /**
+     * start day of the week.
+     */
     private int startDayOfTheWeek;
+    /**
+     * decorate dates outside month.
+     */
     private boolean decorateDatesOutsideMonth;
+    /**
+     * disable auto date selection.
+     */
     private boolean disableAutoDateSelection;
-    ArrayList<String> monthList = new ArrayList<>();
 
+    /**
+     * arg-constructor.
+     *
+     * @param context context
+     *
+     * @param year year
+     *
+     * @param month month
+     *
+     * @param onDateCellItemClickListener onDateCellItemClickListener
+     *
+     * @param showDatesOutsideMonth showDatesOutsideMonth
+     *
+     * @param decorateDatesOutsideMonth decorateDatesOutsideMonth
+     *
+     * @param startDayOfTheWeek startDayOfTheWeek
+     *
+     * @param disableAutoDateSelection disableAutoDateSelection
+     */
     public MonthViewPagerAdapter(Context context, int year, int month,
                                  FlexibleCalendarGridAdapter.OnDateCellItemClickListener onDateCellItemClickListener,
                                  boolean showDatesOutsideMonth, boolean decorateDatesOutsideMonth, int startDayOfTheWeek,
@@ -53,6 +97,13 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
         initializeDateAdapters(year, month);
     }
 
+    /**
+     * initialize date adapters.
+     *
+     * @param year year
+     *
+     * @param month month
+     */
     private void initializeDateAdapters(int year, int month) {
         int pYear;
         int pMonth;
@@ -63,9 +114,7 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
             pYear = year;
             pMonth = month - 1;
         }
-        System.out.println(" FlexibleCalendarGridAdapter month--- "+pMonth+" "+month);
         for (int i = 0; i < VIEWS_IN_PAGER - 1; i++) {
-            System.out.println(" FlexibleCalendarGridAdapter month---2 "+pMonth+" "+month+" "+pYear+" "+year);
             dateAdapters.add(new FlexibleCalendarGridAdapter(context, year, month, showDatesOutsideMonth, decorateDatesOutsideMonth, startDayOfTheWeek, disableAutoDateSelection));
             if (month == 11) {
                 year++;
@@ -74,20 +123,44 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
                 month++;
             }
         }
-        System.out.println(" FlexibleCalendarGridAdapter month---3 "+pMonth+" "+month+" "+pYear+" "+year);
         dateAdapters.add(new FlexibleCalendarGridAdapter(context, pYear, pMonth, showDatesOutsideMonth, decorateDatesOutsideMonth, startDayOfTheWeek, disableAutoDateSelection));
     }
 
+    /**
+     * destroy container.
+     *
+     * @param componentContainer componentContainer
+     *
+     * @param pos pos
+     *
+     * @param obj obj
+     */
     @Override
-    public void destroyPageFromContainer(ComponentContainer componentContainer, int i, Object o) {
+    public void destroyPageFromContainer(final ComponentContainer componentContainer, final int pos, final Object obj) {
         componentContainer.removeAllComponents();
     }
 
+    /**
+     * page matcher.
+     *
+     * @param component
+     *
+     * @param obj obj
+     */
     @Override
-    public boolean isPageMatchToObject(Component component, Object o) {
-        return component == o;
+    public boolean isPageMatchToObject(final Component component, final Object obj) {
+        return component == obj;
     }
 
+    /**
+     * refresh date adapter.
+     *
+     * @param position position
+     *
+     * @param selectedDateItem selectedDateItem
+     *
+     * @param refreshAll refreshAll
+     */
     public void refreshDateAdapters(int position, SelectedDateItem selectedDateItem, boolean refreshAll) {
         FlexibleCalendarGridAdapter currentAdapter = dateAdapters.get(position);
         if (refreshAll) {
@@ -110,6 +183,11 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
 
     }
 
+    /**
+     * get month adapter.
+     *
+     * @param position position
+     */
     public FlexibleCalendarGridAdapter getMonthAdapterAtPosition(int position) {
         FlexibleCalendarGridAdapter gridAdapter = null;
         if (dateAdapters != null && position >= 0 && position < dateAdapters.size()) {
@@ -118,12 +196,21 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
         return gridAdapter;
     }
 
-
+    /**
+     * get count.
+     *
+     * @return count
+     */
     @Override
     public int getCount() {
         return VIEWS_IN_PAGER;
     }
 
+    /**
+     * set selected item.
+     *
+     * @param selectedItem
+     */
     public void setSelectedItem(SelectedDateItem selectedItem) {
         for (FlexibleCalendarGridAdapter f : dateAdapters) {
             f.setSelectedItem(selectedItem, true, false);
@@ -131,23 +218,49 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
         this.notifyDataChanged();
     }
 
+    /**
+     * set set month event fetcher.
+     *
+     * @param monthEventFetcher monthEventFetcher
+     */
     public void setMonthEventFetcher(FlexibleCalendarGridAdapter.MonthEventFetcher monthEventFetcher) {
         this.monthEventFetcher = monthEventFetcher;
     }
 
+    /**
+     * get cell view drawer.
+     *
+     * @return cellViewDrawer
+     */
     public ICellViewDrawer getCellViewDrawer() {
         return cellViewDrawer;
     }
 
+    /**
+     * set cell view drawer.
+     *
+     * @param cellViewDrawer cellViewDrawer
+     */
     public void setCellViewDrawer(IDateCellViewDrawer cellViewDrawer) {
         this.cellViewDrawer = cellViewDrawer;
     }
 
+    /**
+     * set spacing.
+     *
+     * @param horizontalSpacing horizntalSpacing
+     *
+     * @param verticalSpacing verticalSpacing
+     */
     public void setSpacing(int horizontalSpacing, int verticalSpacing) {
-        this.gridViewHorizontalSpacing = horizontalSpacing;
-        this.gridViewVerticalSpacing = verticalSpacing;
+
     }
 
+    /**
+     * set show dates dutside month.
+     *
+     * @param showDatesOutsideMonth showDatesOutsideMonth
+     */
     public void setShowDatesOutsideMonth(boolean showDatesOutsideMonth) {
         this.showDatesOutsideMonth = showDatesOutsideMonth;
         for (FlexibleCalendarGridAdapter adapter : dateAdapters) {
@@ -155,6 +268,11 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
         }
     }
 
+    /**
+     * set decorate dates outside month.
+     *
+     * @param decorateDatesOutsideMonth decorateDatesOutsideMonth
+     */
     public void setDecorateDatesOutsideMonth(boolean decorateDatesOutsideMonth) {
         this.decorateDatesOutsideMonth = decorateDatesOutsideMonth;
         for (FlexibleCalendarGridAdapter adapter : dateAdapters) {
@@ -162,6 +280,11 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
         }
     }
 
+    /**
+     * set disable auto date selection.
+     *
+     * @param disableAutoDateSelection disableAutoDateSelection
+     */
     public void setDisableAutoDateSelection(boolean disableAutoDateSelection) {
         this.disableAutoDateSelection = disableAutoDateSelection;
         for (FlexibleCalendarGridAdapter adapter : dateAdapters) {
@@ -169,6 +292,11 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
         }
     }
 
+    /**
+     * get index page.
+     *
+     * @param object object
+     */
     @Override
     public int getPageIndex(Object object) {
         if (refreshMonthViewAdpater) {
@@ -177,6 +305,11 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
         return POSITION_REMAIN;
     }
 
+    /**
+     * set start day of the week.
+     *
+     * @param startDayOfTheWeek startDayOfTheWeek
+     */
     public void setStartDayOfTheWeek(int startDayOfTheWeek) {
         this.startDayOfTheWeek = startDayOfTheWeek;
         for (FlexibleCalendarGridAdapter adapter : dateAdapters) {
@@ -184,6 +317,11 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
         }
     }
 
+    /**
+     * refresh user selected item.
+     *
+     * @param selectedDateItem selectedDateItem
+     */
     public void refreshUserSelectedItem(SelectedDateItem selectedDateItem) {
         for (FlexibleCalendarGridAdapter adapter : dateAdapters) {
             if (adapter.getUserSelectedItem() != null
@@ -194,7 +332,14 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
 
     }
 
+    /**
+     * MonthViewPagerDataSetObserver.
+     */
     protected class MonthViewPagerDataSetObserver extends DataSetSubscriber {
+
+        /**
+         * onchange API.
+         */
         @Override
         public void onChanged() {
             for (FlexibleCalendarGridAdapter adapter : dateAdapters) {
@@ -202,6 +347,9 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
             }
         }
 
+        /**
+         * onInvalidated API.
+         */
         @Override
         public void onInvalidated() {
             for (FlexibleCalendarGridAdapter adapter : dateAdapters) {
@@ -210,15 +358,17 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
         }
     }
 
-
+    /**
+     * create page container.
+     *
+     * @param componentContainer componentContainer
+     *
+     * @param pos pos
+     *
+     * @return componentContainer
+     */
     @Override
     public Object createPageInContainer(ComponentContainer componentContainer, int pos) {
-
-//        LayoutScatter layoutScatter = LayoutScatter.getInstance(context);
-//        DirectionalLayout layout = new DirectionalLayout(context);
-//        layout.setOrientation(1);
-//        layout.verifyLayoutConfig(new ComponentContainer.LayoutConfig(ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_CONTENT));
-//
         Component component = LayoutBoost.inflate(context, ResourceTable.Layout_month_grid_layout, null, false);
         ListContainer gridList = (ListContainer) component.findComponentById(ResourceTable.Id_grid_list);
 

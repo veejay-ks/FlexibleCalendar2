@@ -1,11 +1,7 @@
 package com.p_v.flexiblecalendar;
 
-import com.p_v.flexiblecalendar.view.CalendarRowView;
-import com.p_v.flexiblecalendar.view.ResourceUtil;
 import ohos.agp.components.*;
-import ohos.agp.utils.Color;
 import ohos.app.Context;
-
 import com.antonyt.infiniteviewpager.InfinitePagerAdapter;
 import com.p_v.flexiblecalendar.entity.Event;
 import com.p_v.flexiblecalendar.entity.SelectedDateItem;
@@ -13,55 +9,104 @@ import com.p_v.flexiblecalendar.exception.HighValueException;
 import com.p_v.flexiblecalendar.view.BaseCellView;
 import com.p_v.flexiblecalendar.view.impl.DateCellViewImpl;
 import com.p_v.flexiblecalendar.view.impl.WeekdayCellViewImpl;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
- * A Flexible calendar view
- *
- * @author p-v
+ * MonthViewPagerAdapter class.
  */
 public class FlexibleCalendarView extends DirectionalLayout implements
         FlexibleCalendarGridAdapter.OnDateCellItemClickListener,
         FlexibleCalendarGridAdapter.MonthEventFetcher, Component.EstimateSizeListener {
-
-
     /*
-     * Direction Constants
+     * RIGHT.
      */
     public static final int RIGHT = 0;
+    /*
+     * LEFT.
+     */
     public static final int LEFT = 1;
+    /*
+     * HIGH VALUE.
+     */
     private static final int HIGH_VALUE = 20000;
+    /*
+     * infinite page adapter.
+     */
     private InfinitePagerAdapter monthInfPagerAdapter;
+    /*
+     * weekday name display adapter.
+     */
     private WeekdayNameDisplayAdapter weekdayDisplayAdapter;
+    /*
+     * month view pager adapter.
+     */
     private MonthViewPagerAdapter monthViewPagerAdapter;
+    /*
+     * context.
+     */
     private Context context;
     /**
-     * View pager for the month view
+     * View pager for the month view.
      */
     private MonthViewPager monthViewPager;
-    private ListContainer weekDisplayView;
+    /**
+     * month change listener.
+     */
     private OnMonthChangeListener onMonthChangeListener;
+    /**
+     * date click listener.
+     */
     private OnDateClickListener onDateClickListener;
+    /**
+     * event data provider.
+     */
     private EventDataProvider eventDataProvider;
+    /**
+     * calendar view.
+     */
     private CalendarView calendarView;
+    /**
+     * display year.
+     */
     private int displayYear;
+    /*
+     * start display day.
+     */
     private int displayMonth;
+    /*
+     * start display day.
+     */
     private int startDisplayDay;
-    private int weekdayHorizontalSpacing;
-    private int weekdayVerticalSpacing;
+    /*
+     * month day horizontal spacing.
+     */
     private int monthDayHorizontalSpacing;
+    /*
+     * month day vertical spacing.
+     */
     private int monthDayVerticalSpacing;
-    private int monthViewBackground;
-    private int weekViewBackground;
+    /*
+     * row ht.
+     */
     int rowHeight = 0;
+    /*
+     * numb of rows.
+     */
     int numOfRows = 0;
+    /*
+     * show date outside month.
+     */
     private boolean showDatesOutsideMonth;
+    /*
+     * decorate dates outside month.
+     */
     private boolean decorateDatesOutsideMonth;
+    /*
+     * disable auto date selection.
+     */
     private boolean disableAutoDateSelection;
     /**
      * Reset adapters flag used internally
@@ -72,6 +117,9 @@ public class FlexibleCalendarView extends DirectionalLayout implements
      * Currently selected date item
      */
     private SelectedDateItem selectedDateItem;
+    /*
+     * Currently user selected item.
+     */
     private SelectedDateItem userSelectedItem;
     /**
      * Internal flag to override the computed date on month change
@@ -81,30 +129,54 @@ public class FlexibleCalendarView extends DirectionalLayout implements
      * First day of the week in the calendar
      */
     private int startDayOfTheWeek;
+    /*
+     * last position.
+     */
     private int lastPosition;
 
+    /**
+     * paramater constructor.
+     *
+     * @param context context
+     */
     public FlexibleCalendarView(Context context) {
         super(context);
         this.context = context;
-        System.out.println("FSC: constructor1");
     }
 
+    /**
+     * paramater constructor.
+     *
+     * @param context context
+     *
+     * @param attrs attrs
+     */
     public FlexibleCalendarView(Context context, AttrSet attrs) {
         super(context, attrs);
         this.context = context;
-        init(attrs);
-        System.out.println("FSC: constructor2");
+        init();
     }
 
+    /**
+     * paramater constructor.
+     *
+     * @param context context
+     *
+     * @param attrs attrs
+     *
+     * @param defStyleAttr defStyleAttr
+     */
     public FlexibleCalendarView(Context context, AttrSet attrs, String defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        init(attrs);
-        System.out.println("FSC: constructor3");
+        init();
     }
 
-    private void init(AttrSet attrs) {
-        setAttributes(attrs);
+    /**
+     * init.
+     */
+    private void init() {
+        setAttributes();
         setOrientation(VERTICAL);
         setEstimateSizeListener(this);
 
@@ -112,29 +184,21 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         calendarView = new DefaultCalendarView();
 
         //create week view header
-        weekDisplayView = new ListContainer(context);
+        ListContainer weekDisplayView = new ListContainer(context);
         TableLayoutManager tableLayoutManager = new TableLayoutManager();
         tableLayoutManager.setColumnCount(7);
         tableLayoutManager.setRowCount(7);
         weekDisplayView.setLayoutManager(tableLayoutManager);
         weekDisplayView.verifyLayoutConfig(new ComponentContainer.LayoutConfig(ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_CONTENT));
-//        weekDisplayView.setBackgroundResourceId(weekViewBackground);
         weekdayDisplayAdapter = new WeekdayNameDisplayAdapter(getContext(), startDayOfTheWeek, 200);
         //setting default week cell view
         weekdayDisplayAdapter.setCellView(new WeekdayCellViewImpl(calendarView));
         weekDisplayView.setItemProvider(weekdayDisplayAdapter);
-        System.out.println("FSC: weekDisplayView.setWeekDayAdapter");
         this.addComponent(weekDisplayView);
-        System.out.println("FSC: addComponent");
 
         //setup month view
         monthViewPager = new MonthViewPager(context);
-
-//        monthViewPager.setBackground(ResourceUtil.getElementFromResourceId(monthViewBackground));
-
-        numOfRows = showDatesOutsideMonth ? 6 : FlexibleCalendarHelper.getNumOfRowsForTheMonth(displayYear, displayMonth, startDayOfTheWeek);
-        System.out.println(" FlexibleCalendarGridAdapter displaymonth "+displayMonth+" "+displayYear+" "+startDayOfTheWeek+" "+startDisplayDay);
-        monthViewPager.setNumOfRows(showDatesOutsideMonth ? 6 : FlexibleCalendarHelper.getNumOfRowsForTheMonth(displayYear, displayMonth, startDayOfTheWeek));
+        numOfRows = showDatesOutsideMonth ? 6 : FlexibleCalendarHelper.getNumOfRowsForTheMonth(displayYear, displayMonth);
         monthViewPagerAdapter = new MonthViewPagerAdapter(context, displayYear, displayMonth, this,
                 showDatesOutsideMonth, decorateDatesOutsideMonth, startDayOfTheWeek, disableAutoDateSelection);
         monthViewPagerAdapter.setMonthEventFetcher(this);
@@ -152,49 +216,27 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         monthViewPager.addPageChangedListener(new MonthChangeListener());
         monthViewPager.setWidth(ComponentContainer.LayoutConfig.MATCH_PARENT);
         monthViewPager.setHeight(ComponentContainer.LayoutConfig.MATCH_PARENT);
-        System.out.println("FSC: monthViewPager w&h -- "+monthViewPager.getWidth()+" "+monthViewPager.getHeight());
+
         //initialize with the current selected item
         selectedDateItem = new SelectedDateItem(displayYear, displayMonth, startDisplayDay);
         monthViewPagerAdapter.setSelectedItem(selectedDateItem);
-        System.out.println(" FlexibleCalendarGridAdapter displaymonth second "+displayMonth+" "+displayYear+" "+startDayOfTheWeek+" "+startDisplayDay);
         this.addComponent(monthViewPager);
     }
 
-
-    private void setAttributes(AttrSet attrs) {
+    /**
+     * set attributes.
+     */
+    private void setAttributes() {
         Calendar cal = Calendar.getInstance(FlexibleCalendarHelper.getLocale(context));
-//        displayMonth = attrs.getAttr("startDisplayMonth").isPresent() ?
-//                attrs.getAttr("startDisplayMonth").get().getIntegerValue() : 1;
-        System.out.println(" FlexibleCalendarGridAdapter displaymonth "+cal.get(Calendar.MONTH));
         displayMonth = cal.get(Calendar.MONTH);
-//        displayYear = attrs.getAttr("startDisplayYear").isPresent() ?
-//                attrs.getAttr("startDisplayYear").get().getIntegerValue() : 1;
         displayYear = cal.get(Calendar.YEAR);
         startDisplayDay = cal.get(Calendar.DAY_OF_MONTH);
-
-        weekdayHorizontalSpacing = attrs.getAttr("weekDayHorizontalSpacing").isPresent() ?
-                attrs.getAttr("weekDayHorizontalSpacing").get().getDimensionValue() : 5;
-        weekdayVerticalSpacing = attrs.getAttr("weekDayVerticalSpacing").isPresent() ?
-                attrs.getAttr("weekDayVerticalSpacing").get().getDimensionValue() : 5;
-        monthDayHorizontalSpacing = attrs.getAttr("monthDayHorizontalSpacing").isPresent() ?
-                attrs.getAttr("monthDayHorizontalSpacing").get().getDimensionValue() : 5;
-        monthDayVerticalSpacing = attrs.getAttr("monthDayVerticalSpacing").isPresent() ?
-                attrs.getAttr("monthDayVerticalSpacing").get().getDimensionValue() : 5;
-
-        monthViewBackground = attrs.getAttr("monthViewBackground").isPresent() ?
-                attrs.getAttr("monthViewBackground").get().getIntegerValue() : 0;
-        weekViewBackground = attrs.getAttr("weekViewBackground").isPresent() ?
-                attrs.getAttr("weekViewBackground").get().getIntegerValue() : 0;
-
-        showDatesOutsideMonth = attrs.getAttr("showDatesOutsideMonth").isPresent() ?
-                attrs.getAttr("showDatesOutsideMonth").get().getBoolValue() : false;
-        decorateDatesOutsideMonth = attrs.getAttr("decorateDatesOutsideMonth").isPresent() ?
-                attrs.getAttr("decorateDatesOutsideMonth").get().getBoolValue() : false;
-        disableAutoDateSelection = attrs.getAttr("disableAutoDateSelection").isPresent() ?
-                attrs.getAttr("disableAutoDateSelection").get().getBoolValue() : false;
-
-        startDayOfTheWeek = attrs.getAttr("startDayOfTheWeek").isPresent() ?
-                attrs.getAttr("startDayOfTheWeek").get().getIntegerValue() : 1;
+        monthDayHorizontalSpacing = 5;
+        monthDayVerticalSpacing = 5;
+        showDatesOutsideMonth = false;
+        decorateDatesOutsideMonth = false;
+        disableAutoDateSelection = false;
+        startDayOfTheWeek = 1;
         if (startDayOfTheWeek < 1 || startDayOfTheWeek > 7) {
             // setting the start day to sunday in case of invalid input
             startDayOfTheWeek = Calendar.SUNDAY;
@@ -206,80 +248,49 @@ public class FlexibleCalendarView extends DirectionalLayout implements
      */
     public void expand() {
         estimateSize(ComponentContainer.LayoutConfig.MATCH_PARENT, ComponentContainer.LayoutConfig.MATCH_CONTENT);
-        final int targetHeight = getEstimatedHeight();
-
         getLayoutConfig().height = 0;
         setVisibility(Component.VISIBLE);
-        /*Animator a = new Animator() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                getLayoutConfig().height = interpolatedTime == 1
-                        ? ComponentContainer.LayoutConfig.MATCH_CONTENT
-                        : (int) (targetHeight * interpolatedTime);
-                postLayout();
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        a.setDuration(((int) (targetHeight / getContext().getResourceManager().getDisplayMetrics().density)));
-        startAnimation(a);*/
     }
 
     /**
      * Collapse the view with animation
      */
     public void collapse() {
-        final int initialHeight = this.getEstimatedHeight();
-        /*Animator a = new Animator() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                if (interpolatedTime == 1) {
-                    setVisibility(Component.GONE);
-                } else {
-                    getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
-                    requestLayout();
-                }
-            }
-
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
-        };
-
-        a.setDuration(((int) (initialHeight / getContext().getResources().getDisplayMetrics().density)));
-        startAnimation(a);*/
+        setVisibility(Component.HIDE);
     }
 
+    /**
+     * set on month change listener.
+     *
+     * @param onMonthChangeListener onMonthChangeListener
+     */
     public void setOnMonthChangeListener(OnMonthChangeListener onMonthChangeListener) {
         this.onMonthChangeListener = onMonthChangeListener;
     }
 
+    /**
+     * set on date click listener.
+     *
+     * @param onDateClickListener onDateClickListener
+     */
     public void setOnDateClickListener(OnDateClickListener onDateClickListener) {
         this.onDateClickListener = onDateClickListener;
     }
 
+    /**
+     * set event data listener.
+     *
+     * @param eventDataProvider eventDataProvider
+     */
     public void setEventDataProvider(EventDataProvider eventDataProvider) {
         this.eventDataProvider = eventDataProvider;
     }
 
-    /* /**
-      * Set the start display year and month
-      * @param year  start year to display
-      * @param month  start month to display
-      *//*
-    public void setStartDisplay(int year,int month){
-        //TODO revisit there is something wrong going here things are not selected
-        this.displayYear = year;
-        this.displayMonth = month;
-        invalidate();
-        requestLayout();
-    }
-*/
+    /**
+     * set on date click.
+     *
+     * @param selectedItem selectedItem
+     */
     @Override
     public void onDateClick(SelectedDateItem selectedItem) {
         if (selectedDateItem.getYear() != selectedItem.getYear() || selectedDateItem.getMonth() != selectedItem.getMonth()) {
@@ -312,6 +323,11 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         }
     }
 
+    /**
+     * redraw month grid.
+     *
+     * @param position position
+     */
     private void redrawMonthGrid(int position) {
         if (position == -1) {
             //redraw all
@@ -325,6 +341,11 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         }
     }
 
+    /**
+     * re add adapter.
+     *
+     * @param view view
+     */
     private void reAddAdapter(Component view) {
         if (view != null) {
             BaseItemProvider adapter = ((ListContainer) view).getItemProvider();
@@ -333,6 +354,8 @@ public class FlexibleCalendarView extends DirectionalLayout implements
     }
 
     /**
+     * get Selected date item
+     *
      * @return currently selected date
      */
     public SelectedDateItem getSelectedDateItem() {
@@ -340,14 +363,6 @@ public class FlexibleCalendarView extends DirectionalLayout implements
             return userSelectedItem == null ? null : userSelectedItem.clone();
         }
         return selectedDateItem.clone();
-    }
-
-    public int getCurrentMonth() {
-        return selectedDateItem.getMonth();
-    }
-
-    public int getCurrentYear() {
-        return selectedDateItem.getYear();
     }
 
     /**
@@ -408,6 +423,15 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         }
     }
 
+    /**
+     * get events for the day.
+     *
+     * @param year year
+     *
+     * @param month month
+     *
+     * @param day day
+     */
     @Override
     public List<? extends Event> getEventsForTheDay(int year, int month, int day) {
         return eventDataProvider == null ?
@@ -424,46 +448,6 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         this.calendarView = calendar;
         monthViewPagerAdapter.getCellViewDrawer().setCalendarView(calendarView);
         weekdayDisplayAdapter.getCellViewDrawer().setCalendarView(calendarView);
-    }
-
-    /**
-     * Set the background resource for week view
-     *
-     * @param resourceId
-     */
-//    public void setWeekViewBackgroundResource( int resourceId) {
-//        this.weekViewBackground = resourceId;
-//        weekDisplayView.setBackgroundResourceId(resourceId);
-//    }
-
-    /**
-     * Set background resource for the month view
-     *
-     * @param resourceId
-     */
-    public void setMonthViewBackgroundResource( int resourceId) {
-        this.monthViewBackground = resourceId;
-        monthViewPager.setBackground(ResourceUtil.getElementFromResourceId(resourceId));
-    }
-
-    /**
-     * sets weekview header horizontal spacing between weekdays
-     *
-     * @param spacing
-     */
-    public void setWeekViewHorizontalSpacing(int spacing) {
-        this.weekdayHorizontalSpacing = spacing;
-//        weekDisplayView.setHorizontalSpacing(weekdayHorizontalSpacing);
-    }
-
-    /**
-     * Sets the weekview header vertical spacing between weekdays
-     *
-     * @param spacing
-     */
-    public void setWeekViewVerticalSpacing(int spacing) {
-        this.weekdayVerticalSpacing = spacing;
-//        weekDisplayView.setVerticalSpacing(weekdayVerticalSpacing);
     }
 
     /**
@@ -513,15 +497,11 @@ public class FlexibleCalendarView extends DirectionalLayout implements
      */
     public void goToCurrentMonth() {
         //check has to go left side or right
-        System.out.println("monthDifference "+displayYear+" "+displayMonth);
         int monthDifference = FlexibleCalendarHelper
                 .getMonthDifference(displayYear, displayMonth);
-        System.out.println("monthDifference "+monthDifference+" "+lastPosition);
         if (monthDifference != 0) {
             resetAdapters = true;
             if (monthDifference < 0) {
-                //set fake count to avoid freezing in InfiniteViewPager as it iterates to Integer.MAX_VALUE
-//                monthInfPagerAdapter.setFakeCount(lastPosition);
                 monthInfPagerAdapter.notifyDataChanged();
             }
             moveToPosition(monthDifference);
@@ -581,50 +561,8 @@ public class FlexibleCalendarView extends DirectionalLayout implements
      */
     public void setShowDatesOutsideMonth(boolean showDatesOutsideMonth) {
         this.showDatesOutsideMonth = showDatesOutsideMonth;
-        monthViewPager.setNumOfRows(showDatesOutsideMonth ? 6 : FlexibleCalendarHelper.getNumOfRowsForTheMonth(displayYear, displayMonth, startDayOfTheWeek));
         monthViewPager.invalidate();
         monthViewPagerAdapter.setShowDatesOutsideMonth(showDatesOutsideMonth);
-    }
-
-    /**
-     * Get the decorate dates outside month flag
-     *
-     * @return true if the decorateDatesOutsideMonth is enabled, false otherwise
-     */
-    public boolean getDecorateDatesOutsideMonth() {
-        return decorateDatesOutsideMonth;
-    }
-
-    /**
-     * Flag to decorate dates outside the month. Default value is false which will only decorate
-     * dates within the month
-     *
-     * @param decorateDatesOutsideMonth set true to decorate the dates outside month
-     */
-    public void setDecorateDatesOutsideMonth(boolean decorateDatesOutsideMonth) {
-        this.decorateDatesOutsideMonth = decorateDatesOutsideMonth;
-        monthViewPager.invalidate();
-        monthViewPagerAdapter.setDecorateDatesOutsideMonth(decorateDatesOutsideMonth);
-    }
-
-    /**
-     * Get the disable auto date selection flag
-     *
-     * @return true if disableAutoDateSelection is enabled
-     */
-    public boolean isDisableAutoDateSelection() {
-        return disableAutoDateSelection;
-    }
-
-    /**
-     * Disable auto selection of the first day of the month
-     *
-     * @param disableAutoDateSelection true to disable the auto selection
-     */
-    public void setDisableAutoDateSelection(boolean disableAutoDateSelection) {
-        this.disableAutoDateSelection = disableAutoDateSelection;
-        monthViewPager.invalidate();
-        monthViewPagerAdapter.setDisableAutoDateSelection(disableAutoDateSelection);
     }
 
     /**
@@ -632,13 +570,6 @@ public class FlexibleCalendarView extends DirectionalLayout implements
      */
     public void refresh() {
         redrawMonthGrid(-1);
-    }
-
-    /**
-     * @return start day of the week
-     */
-    public int getStartDayOfTheWeek() {
-        return startDayOfTheWeek;
     }
 
     /**
@@ -661,18 +592,6 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         }
         monthViewPagerAdapter.setStartDayOfTheWeek(startDayOfTheWeek);
         weekdayDisplayAdapter.setStartDayOfTheWeek(startDayOfTheWeek);
-    }
-
-    /**
-     * Select the date in the FlexibleCalendar
-     *
-     * @param date
-     */
-    public void selectDate(Date date) {
-        if (date == null) return;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        selectDate(calendar);
     }
 
     /**
@@ -824,12 +743,10 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         public BaseCellView getCellView(int position, Component convertView, ComponentContainer parent,
                                         int cellType) {
             BaseCellView cellView = (BaseCellView) convertView;
-            System.out.println("getcompo inside FCGA 3 cont "+cellView);
             if (cellView == null) {
                 LayoutScatter scatter = LayoutScatter.getInstance(context);
                 cellView = (BaseCellView) scatter.parse(ResourceTable.Layout_square_cell_layout, parent, false);
             }
-            System.out.println("getcompo inside FCGA 3 cont 2 "+cellView);
             return cellView;
         }
 
@@ -837,8 +754,8 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         public BaseCellView getWeekdayCellView(int position, Component convertView, ComponentContainer parent) {
             BaseCellView cellView = (BaseCellView) convertView;
             if (cellView == null) {
-                LayoutScatter scatter = LayoutScatter.getInstance(context);//LayoutInflater inflater = LayoutInflater.from(context);
-                cellView = (BaseCellView) scatter.parse(ResourceTable.Layout_square_cell_layout, parent, false);//                cellView = (BaseCellView) inflater.inflate(ResourceTable.layout.square_cell_layout, null);
+                LayoutScatter scatter = LayoutScatter.getInstance(context);
+                cellView = (BaseCellView) scatter.parse(ResourceTable.Layout_square_cell_layout, parent, false);
             }
             return cellView;
         }
@@ -864,12 +781,12 @@ public class FlexibleCalendarView extends DirectionalLayout implements
 
         @Override
         public void onPageSliding(int i, float v, int i1) {
-
+            // TO-DO
         }
 
         @Override
         public void onPageSlideStateChanged(int i) {
-
+            // TO-DO
         }
 
         @Override
@@ -913,35 +830,12 @@ public class FlexibleCalendarView extends DirectionalLayout implements
             if (resetAdapters) {
                 resetAdapters = false;
                 monthViewPager.postLayout();
-                /*monthViewPager.postLayout(new Runnable() {
-                    @Override
-                    public void run() {
-                        //resetting fake count
-                        monthInfPagerAdapter.setFakeCount(-1);
-                        monthInfPagerAdapter.notifyDataChanged();
-                    }
-                });*/
             }
         }
     }
 
     @Override
     public boolean onEstimateSize(int widthScreen, int heightScreen) {
-        boolean wrapHeight = Component.EstimateSpec.getMode(heightScreen) == Component.EstimateSpec.PRECISE;
-        int height = getHeight();
-        if (wrapHeight && rowHeight == 0) {
-            int width = getWidth();
-            widthScreen = MeasureSpec.getMeasureSpec(width,EstimateSpec.PRECISE);
-            if (getChildCount() > 0) {
-                Component firstChild = getComponentAt(0);
-                firstChild.estimateSize(widthScreen, MeasureSpec.getMeasureSpec(height,EstimateSpec.NOT_EXCEED));
-                height = firstChild.getHeight();
-                rowHeight = numOfRows == 6 ? height : (int) Math.ceil(((float) height * 6) / 5);
-            }
-        }
-        heightScreen = MeasureSpec.getMeasureSpec(rowHeight, EstimateSpec.PRECISE);
-//        this.onEstimateSize(widthScreen,heightScreen);
-        System.out.println("VIJAY onEstimateSize "+heightScreen+" "+widthScreen);
         return false;
     }
 }

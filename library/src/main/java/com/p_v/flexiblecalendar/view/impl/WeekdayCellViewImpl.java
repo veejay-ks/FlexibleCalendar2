@@ -7,7 +7,7 @@ import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
 
 /**
- * Default week cell view drawer
+ * Default week cell view drawer.
  *
  * @author p-v
  */

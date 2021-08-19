@@ -27,12 +27,12 @@ public class InfiniteViewPager extends PageSlider {
 
     public void setProvider(PageSliderProvider provider, int lastPosition) {
         super.setProvider(provider);
-        super.setCurrentPage(lastPosition,false);
+        super.setCurrentPage(lastPosition, false);
     }
 
     @Override
     public void setCurrentPage(int itemPos) {
-        setCurrentPage(itemPos,false);
+        setCurrentPage(itemPos, false);
     }
 
     @Override
@@ -60,7 +60,9 @@ public class InfiniteViewPager extends PageSlider {
         }
     }
 
-
+    /**
+     *To get the offSetAmount.
+     */
     public int getOffsetAmount() {
         if (getProvider().getCount() == 0) {
             return 0;

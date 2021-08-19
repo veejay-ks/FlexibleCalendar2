@@ -1,7 +1,9 @@
 package com.p_v.flexiblecalendar.entity;
 
 /**
- * @author p-v
+ * CalenderEvent class to set and get the colors.
+ *
+ * {@author p-v}
  */
 public class CalendarEvent implements Event {
 
