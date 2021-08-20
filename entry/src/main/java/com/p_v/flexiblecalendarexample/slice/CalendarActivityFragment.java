@@ -1,62 +1,112 @@
 package com.p_v.flexiblecalendarexample.slice;
 
-import com.p_v.flexiblecalendar.FlexibleCalendarView;
-import com.p_v.flexiblecalendar.entity.CalendarEvent;
-import com.p_v.flexiblecalendar.view.BaseCellView;
-import com.p_v.flexiblecalendar.view.SquareCellView;
-import com.p_v.flexiblecalendarexample.ResourceTable;
 import ohos.aafwk.ability.fraction.Fraction;
 import ohos.aafwk.content.Intent;
-import ohos.agp.components.*;
+import ohos.agp.components.Component;
+import ohos.agp.components.ComponentContainer;
+import ohos.agp.components.LayoutScatter;
+import ohos.agp.components.Text;
+import ohos.agp.components.Button;
 import ohos.agp.render.layoutboost.LayoutBoost;
 import ohos.agp.utils.Color;
 import ohos.agp.window.dialog.ToastDialog;
 import ohos.app.Context;
 import ohos.global.resource.NotExistException;
 import ohos.global.resource.WrongTypeException;
+import com.p_v.flexiblecalendar.FlexibleCalendarView;
+import com.p_v.flexiblecalendar.entity.CalendarEvent;
+import com.p_v.flexiblecalendar.view.BaseCellView;
+import com.p_v.flexiblecalendar.view.SquareCellView;
+import com.p_v.flexiblecalendarexample.ResourceTable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * CalendarActivityFragment.
+ */
 public class CalendarActivityFragment extends Fraction implements FlexibleCalendarView.OnMonthChangeListener, FlexibleCalendarView.OnDateClickListener {
-    private ComponentContainer mContainer;
-    private Context mContext;
+    /**
+     * container.
+     */
+    private ComponentContainer container;
+    /**
+     * context.
+     */
+    private Context context;
+    /**
+     * calendar view.
+     */
     private FlexibleCalendarView calendarView;
+    /**
+     * text view.
+     */
     private Text someTextView;
+    /**
+     * calendar instance.
+     */
     private Calendar calendar = Calendar.getInstance();
 
-    public CalendarActivityFragment(Context context, ComponentContainer componentContainer) {
-        this.mContext = context;
-        this.mContainer = componentContainer;
-    }
-
-    public CalendarActivityFragment(Context mContext) {
+    /**
+     * arg constructor.
+     *
+     * @param mContext context
+     */
+    public CalendarActivityFragment(final Context mContext) {
         calendarView.setOnMonthChangeListener((FlexibleCalendarView.OnMonthChangeListener) mContext);
         calendarView.setOnDateClickListener((FlexibleCalendarView.OnDateClickListener) mContext);
     }
 
+    /**
+     * arg constructor.
+     *
+     * @param context            context
+     * @param componentContainer component container
+     */
+    public CalendarActivityFragment(final Context context, final ComponentContainer componentContainer) {
+        this.context = context;
+        this.container = componentContainer;
+    }
+
+    /**
+     * component attached.
+     *
+     * @param scatter   scatter
+     * @param container container
+     * @param intent    intent
+     */
     @Override
-    protected Component onComponentAttached(LayoutScatter scatter, ComponentContainer container, Intent intent) {
+    protected Component onComponentAttached(final LayoutScatter scatter, final ComponentContainer container, final Intent intent) {
         scatter.parse(ResourceTable.Layout_fragment_calendar, container, false);
         updateTitle(calendarView.getSelectedDateItem().getYear(), calendarView.getSelectedDateItem().getMonth());
         return super.onComponentAttached(scatter, container, intent);
     }
 
+    /**
+     * get component.
+     *
+     * @return component
+     */
     @Override
     public Component getComponent() {
-        Component component = LayoutBoost.inflate(this.mContext, ResourceTable.Layout_fragment_calendar, this.mContainer, false);
+        Component component = LayoutBoost.inflate(this.context, ResourceTable.Layout_fragment_calendar, this.container, false);
         initView(component);
         return super.getComponent();
     }
 
-    private void initView(Component component) {
+    /**
+     * init.
+     *
+     * @param component component
+     */
+    private void initView(final Component component) {
         calendarView = (FlexibleCalendarView) component.findComponentById(ResourceTable.Id_calendar_view);
         calendarView.setCalendarView(new FlexibleCalendarView.CalendarView() {
 
             @Override
-            public BaseCellView getCellView(int position, Component convertView, ComponentContainer parent, int cellType) {
+            public BaseCellView getCellView(final int position, final Component convertView, final ComponentContainer parent, final int cellType) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter scatter = LayoutScatter.getInstance(getContext());
@@ -65,11 +115,7 @@ public class CalendarActivityFragment extends Fraction implements FlexibleCalend
                 if (cellType == BaseCellView.OUTSIDE_MONTH) {
                     try {
                         cellView.setTextColor(new Color(getResourceManager().getElement(ResourceTable.Color_date_outside_month_text_color_activity_1).getColor()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (NotExistException e) {
-                        e.printStackTrace();
-                    } catch (WrongTypeException e) {
+                    } catch (IOException | NotExistException | WrongTypeException e) {
                         e.printStackTrace();
                     }
                 }
@@ -77,7 +123,7 @@ public class CalendarActivityFragment extends Fraction implements FlexibleCalend
             }
 
             @Override
-            public BaseCellView getWeekdayCellView(int position, Component convertView, ComponentContainer parent) {
+            public BaseCellView getWeekdayCellView(final int position, final Component convertView, final ComponentContainer parent) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter scatter = LayoutScatter.getInstance(getContext());
@@ -87,12 +133,12 @@ public class CalendarActivityFragment extends Fraction implements FlexibleCalend
             }
 
             @Override
-            public String getDayOfWeekDisplayValue(int dayOfWeek, String defaultValue) {
+            public String getDayOfWeekDisplayValue(final int dayOfWeek, final String defaultValue) {
                 return String.valueOf(defaultValue.charAt(0));
             }
         });
-        calendarView.setOnMonthChangeListener((FlexibleCalendarView.OnMonthChangeListener) mContext);
-        calendarView.setOnDateClickListener((FlexibleCalendarView.OnDateClickListener) mContext);
+        calendarView.setOnMonthChangeListener((FlexibleCalendarView.OnMonthChangeListener) context);
+        calendarView.setOnDateClickListener((FlexibleCalendarView.OnDateClickListener) context);
 
         fillEvents();
 
@@ -132,99 +178,88 @@ public class CalendarActivityFragment extends Fraction implements FlexibleCalend
                 calendarView.setShowDatesOutsideMonth(true);
             }
         });
-//        setupToolBar(component);
     }
 
+    /**
+     * fill events.
+     */
     private void fillEvents() {
-        calendarView.setEventDataProvider(new FlexibleCalendarView.EventDataProvider() {
-            @Override
-            public List<CalendarEvent> getEventsForTheDay(int year, int month, int day) {
-                if (year == calendar.get(Calendar.YEAR) && month == calendar.get(Calendar.MONTH) && day == calendar.get(Calendar.DAY_OF_MONTH)) {
-                    List<CalendarEvent> eventColors = new ArrayList<>(2);
-                    eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
-                    eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
-                    return eventColors;
-                }
+        calendarView.setEventDataProvider((int year, int month, int day) -> {
 
-                if (year == 2016 && month == 10 && day == 12) {
-                    List<CalendarEvent> eventColors = new ArrayList<>(2);
-                    eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
-                    eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
-                    return eventColors;
-                }
-
-                if (year == 2016 && month == 10 && day == 7 ||
-                        year == 2016 && month == 10 && day == 29 ||
-                        year == 2016 && month == 10 && day == 5 ||
-                        year == 2016 && month == 10 && day == 9) {
-                    List<CalendarEvent> eventColors = new ArrayList<>(1);
-                    eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
-                    return eventColors;
-                }
-
-                if (year == 2016 && month == 10 && day == 31 ||
-                        year == 2016 && month == 10 && day == 22 ||
-                        year == 2016 && month == 10 && day == 18 ||
-                        year == 2016 && month == 10 && day == 11) {
-                    List<CalendarEvent> eventColors = new ArrayList<>(3);
-                    eventColors.add(new CalendarEvent(ResourceTable.Color_holo_red_dark));
-                    eventColors.add(new CalendarEvent(ResourceTable.Color_holo_orange_light));
-                    eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
-                    return eventColors;
-                }
-                return null;
+            List<CalendarEvent> eventColors = null;
+            if (year == calendar.get(Calendar.YEAR) && month == calendar.get(Calendar.MONTH) && day == calendar.get(Calendar.DAY_OF_MONTH)) {
+                eventColors = new ArrayList<>(2);
+                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
+                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
+                return eventColors;
             }
+
+            if (year == 2016 && month == 10 && day == 12) {
+                eventColors = new ArrayList<>(2);
+                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
+                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
+                return eventColors;
+            }
+            if (year == 2016 && month == 10 && day == 7
+                    || year == 2016 && month == 10 && day == 29
+                    || year == 2016 && month == 10 && day == 5
+                    || year == 2016 && month == 10 && day == 9) {
+                eventColors = new ArrayList<>(1);
+                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
+                return eventColors;
+            }
+
+            if (year == 2016 && month == 10 && day == 31
+                    || year == 2016 && month == 10 && day == 22
+                    || year == 2016 && month == 10 && day == 18
+                    || year == 2016 && month == 10 && day == 11) {
+                eventColors = new ArrayList<>(3);
+                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_red_dark));
+                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_orange_light));
+                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
+                return eventColors;
+            }
+            return eventColors;
+
         });
     }
 
-    /*public void setupToolBar(Component mainView) {
-        Toolbar toolbar = (Toolbar) mainView.findComponentById(ResourceTable.Id_toolbar);
-
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
-        ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-
-        bar.setDisplayHomeAsUpEnabled(true);
-        bar.setDisplayShowTitleEnabled(false);
-        bar.setDisplayShowCustomEnabled(true);
-
-        someTextView = new Text(getActivity());
-        someTextView.setTextColor(getActivity().getResources().getColor(ResourceTable.Color_title_text_color_activity_1));
-        someTextView.setClickedListener(new Component.ClickedListener() {
-            @Override
-            public void onClick(Component v) {
-                if (calendarView.isComponentDisplayed()) {// if (calendarView.isShown()) {
-                    calendarView.collapse();
-                } else {
-                    calendarView.expand();
-                }
-            }
-        });
-        bar.setCustomView(someTextView);
-
-        bar.setBackgroundDrawable(new ColorDrawable(getActivity().getResources()
-                .getColor(ResourceTable.Color_action_bar_color_activity_1)));
-
-        //back button color
-//        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-//        upArrow.setColorFilter(getResources().getColor(R.color.title_text_color_activity_1), PorterDuff.Mode.SRC_ATOP);
-//        bar.setHomeAsUpIndicator(upArrow);
-    }*/
-
-    private void updateTitle(int year, int month) {
+    /**
+     * update title.
+     *
+     * @param year  year
+     * @param month month
+     */
+    private void updateTitle(final int year, final int month) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, 1);
         someTextView.setText(cal.getDisplayName(Calendar.MONTH, Calendar.LONG,
                 this.getResourceManager().getConfiguration().getFirstLocale()) + " " + year);
     }
+
+    /**
+     * month change.
+     *
+     * @param year      year
+     * @param month     month
+     * @param direction direction
+     */
     @Override
-    public void onMonthChange(int year, int month, int direction) {
+    public void onMonthChange(final int year, final int month, final int direction) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, 1);
         updateTitle(year, month);
     }
+
+    /**
+     * on date click.
+     *
+     * @param year  year
+     * @param month month
+     * @param day   day
+     */
     @Override
-    public void onDateClick(int year, int month, int day) {
+    public void onDateClick(final int year, final int month, final int day) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, day);
         ToastDialog toastDialog = new ToastDialog(getContext());

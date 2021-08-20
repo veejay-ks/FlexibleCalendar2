@@ -6,5 +6,10 @@ package com.p_v.flexiblecalendar.entity;
  * @author p-v
  */
 public interface Event {
+    /**
+     * get color.
+     *
+     * @return get color
+     */
     int getColor();
 }

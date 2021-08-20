@@ -1,40 +1,63 @@
 package com.p_v.flexiblecalendarexample.slice.widget;
 
-//import android.content.Context;
-//import android.util.AttributeSet;
 import ohos.agp.components.Component;
 import ohos.app.Context;
 import ohos.agp.components.AttrSet;
-
 import com.p_v.flexiblecalendar.view.CircularEventCellView;
 
 /**
+ * ExampleCellView.
+ *
  * @author p-v
  */
 public class ExampleCellView extends CircularEventCellView implements Component.EstimateSizeListener {
 
-
-    private static final int EXACTLY = 0x40000000;
-
-
-    public ExampleCellView(Context context) {
+    /**
+     * ExampleCellView constructor.
+     *
+     * @param context context
+     */
+    public ExampleCellView(final Context context) {
         super(context);
     }
 
-    public ExampleCellView(Context context, AttrSet attrs) {
+    /**
+     * ExampleCellView constructor.
+     *
+     * @param context context
+     *
+     * @param attrs attrs
+     *
+     */
+    public ExampleCellView(final Context context, final AttrSet attrs) {
         super(context, attrs);
     }
 
-    public ExampleCellView(Context context, AttrSet attrs, int defStyleAttr) {
+    /**
+     * ExampleCellView constructor.
+     *
+     * @param context context
+     *
+     * @param attrs attrs
+     *
+     * @param defStyleAttr defStyleAttr
+     */
+    public ExampleCellView(final Context context, final AttrSet attrs, final String defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+    /**
+     * onestimate size.
+     *
+     * @param widthMeasureSpec width
+     * @param heightMeasureSpec height
+     */
     @Override
-     public boolean onEstimateSize(int widthMeasureSpec, int heightMeasureSpec) {
+     public boolean onEstimateSize(final int widthMeasureSpec, final int heightMeasureSpec) {
         int width = getEstimatedWidth();
         int height = (7 * width) / 8;
-        heightMeasureSpec = EstimateSpec.getSizeWithMode(height, EstimateSpec.PRECISE);
-        super.onEstimateSize(widthMeasureSpec, heightMeasureSpec);
+        int heightMesSpec = EstimateSpec.getSizeWithMode(height, EstimateSpec.PRECISE);
+        super.onEstimateSize(widthMeasureSpec, heightMesSpec);
         return true;
     }
 }

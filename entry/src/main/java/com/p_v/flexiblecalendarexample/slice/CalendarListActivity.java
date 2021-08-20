@@ -1,25 +1,43 @@
 package com.p_v.flexiblecalendarexample.slice;
 
-import com.p_v.flexiblecalendarexample.ResourceTable;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
-import ohos.agp.components.*;
+import ohos.agp.components.BaseItemProvider;
+import ohos.agp.components.Component;
+import ohos.agp.components.ComponentContainer;
+import ohos.agp.components.ListContainer;
+import ohos.agp.components.Text;
 import ohos.agp.render.layoutboost.LayoutBoost;
 import ohos.app.Context;
+import com.p_v.flexiblecalendarexample.ResourceTable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CalendarListActivity.
+ */
 public class CalendarListActivity extends AbilitySlice {
+    /**
+     * Calendar List.
+     */
     private List<String> calendarList;
 
+    /**
+     * onStart.
+     *
+     * @param intent intent
+     */
     @Override
-    protected void onStart(Intent intent) {
+    protected void onStart(final Intent intent) {
         super.onStart(intent);
         setUIContent(ResourceTable.Layout_activity_calendar_list);
         initView();
     }
 
+    /**
+     * init view.
+     */
     private void initView() {
         ListContainer listContainer = (ListContainer) findComponentById(ResourceTable.Id_calendar_list_view);
         calendarList = new ArrayList<>();
@@ -32,95 +50,108 @@ public class CalendarListActivity extends AbilitySlice {
         listContainer.setItemProvider(customAdapter);
     }
 
+    /**
+     * CustomAdapter.
+     */
     public class CustomAdapter extends BaseItemProvider {
+        /**
+         * adapter context.
+         */
         private Context adapterContext;
+        /**
+         * calendar list adapter.
+         */
         private List<String> calendarListAdapter;
 
-        public CustomAdapter(Context context, List<String> data) {
+        /**
+         * arg constructor.
+         *
+         * @param context context
+         * @param data    data
+         */
+        public CustomAdapter(final Context context, final List<String> data) {
             this.adapterContext = context;
             this.calendarListAdapter = data;
         }
 
+        /**
+         * get count.
+         * retutn count
+         */
         @Override
         public int getCount() {
             return calendarList.size();
         }
 
+        /**
+         * get item.
+         *
+         * @param pos index
+         * @return cal val
+         */
         @Override
-        public String getItem(int i) {
-            return calendarList.get(i);
+        public String getItem(final int pos) {
+            return calendarList.get(pos);
         }
 
+        /**
+         * get item id.
+         *
+         * @param getItemId get item id
+         * @return long val
+         */
         @Override
-        public long getItemId(int getItemId) {
+        public long getItemId(final int getItemId) {
             return Long.parseLong(calendarList.get(getItemId));
         }
 
+        /**
+         * get component.
+         *
+         * @param pos                pos
+         * @param component          component
+         * @param componentContainer componentcontainer
+         * @return component
+         */
         @Override
-        public Component getComponent(int pos, Component component, ComponentContainer componentContainer) {
+        public Component getComponent(final int pos, final Component component, final ComponentContainer componentContainer) {
             final Component calList = LayoutBoost.inflate(this.adapterContext, ResourceTable.Layout_mylist, componentContainer, false);
             final Text text = (Text) calList.findComponentById(ResourceTable.Id_text_view);
             text.setText(calendarListAdapter.get(pos));
             text.setId(pos);
-            text.setClickedListener(new Component.ClickedListener() {
-                @Override
-                public void onClick(Component component) {
-                    int id = component.getId();
-                    checkIntent(id);
-                }
+            text.setClickedListener(component1 -> {
+                int id = component1.getId();
+                checkIntent(id);
             });
             return calList;
         }
-    }
-
-    private void checkIntent(int id) {
-        switch (id) {
-            case 0:
-                present(new CalendarActivity(),new Intent());
-                //AbilityNavigateUtil.startAbility(getAbility(), CalendarActivity.class);
-                break;
-            case 1:
-                present(new CalendarActivity2(),new Intent());
-                // AbilityNavigateUtil.startAbility(getAbility(),CalendarActivity2.class);
-                break;
-            case 2:
-                present(new CalendarActivity3(),new Intent());
-                //AbilityNavigateUtil.startAbility(getAbility(),CalendarActivity3.class);
-                break;
-            case 3:
-                present(new CalendarActivity4(),new Intent());
-                //AbilityNavigateUtil.startAbility(getAbility(),CalendarActivity4.class);
-                break;
-            case 4:
-                present(new CalendarActivity5(),new Intent());
-                //AbilityNavigateUtil.startAbility(getAbility(),CalendarActivity5.class);
-                break;
-            default:
-                break;
+        /**
+         * check navigation to calendar.
+         *
+         * @param id id
+         */
+        private void checkIntent(final int id) {
+            switch (id) {
+                case 0:
+                    present(new CalendarActivity(), new Intent());
+                    break;
+                case 1:
+                    present(new CalendarActivity2(), new Intent());
+                    break;
+                case 2:
+                    present(new CalendarActivity3(), new Intent());
+                    break;
+                case 3:
+                    present(new CalendarActivity4(), new Intent());
+                    break;
+                case 4:
+                    present(new CalendarActivity5(), new Intent());
+                    break;
+                default:
+                    break;
+            }
         }
     }
-
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(ResourceTable.menu.menu_calendar_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == ResourceTable.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 }
 
 

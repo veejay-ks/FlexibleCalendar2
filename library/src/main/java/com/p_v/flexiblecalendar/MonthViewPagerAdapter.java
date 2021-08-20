@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * MonthViewPagerAdapter class.
+ * @author p-v
  */
 public class MonthViewPagerAdapter extends PageSliderProvider {
 

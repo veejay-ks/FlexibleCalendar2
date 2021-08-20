@@ -6,6 +6,7 @@ import com.antonyt.infiniteviewpager.InfiniteViewPager;
 
 /**
  * MonthViewPager class.
+ * @author p-v
  */
 class MonthViewPager extends InfiniteViewPager implements Component.EstimateSizeListener {
 

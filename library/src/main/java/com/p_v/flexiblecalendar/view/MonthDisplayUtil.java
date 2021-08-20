@@ -2,100 +2,130 @@ package com.p_v.flexiblecalendar.view;
 
 import java.util.Calendar;
 
+/**
+ * Month display util.
+ */
 public class MonthDisplayUtil {
-    // display pref
-    private final int mWeekStartDay;
-
-    // holds current month, year, helps compute display
-    private Calendar mCalendar;
-
-    // cached computed stuff that helps with display
-    private int mNumDaysInMonth;
-    private int mNumDaysInPrevMonth;
-    private int mOffset;
-
+    /**
+     * week start day.
+     */
+    private final int weekStartDay;
+    /**
+     * calendar.
+     */
+    private Calendar calendar;
+    /**
+     * num days in month.
+     */
+    private int numDaysInMonth;
+    /**
+     * num days in prev month.
+     */
+    private int numDaysInPrevMonth;
+    /**
+     * offset.
+     */
+    private int offset;
 
     /**
+     * arg constructor.
+     * @param year The year.
+     * @param month The month.
+     */
+    public MonthDisplayUtil(final int year, final int month) {
+        this(year, month, Calendar.SUNDAY);
+    }
+
+    /**
+     * arg constructor.
      * @param year The year.
      * @param month The month.
      * @param weekStartDay What day of the week the week should start.
      */
-    public MonthDisplayUtil(int year, int month, int weekStartDay) {
+    public MonthDisplayUtil(final int year, final int month, final int weekStartDay) {
 
         if (weekStartDay < Calendar.SUNDAY || weekStartDay > Calendar.SATURDAY) {
             throw new IllegalArgumentException();
         }
-        mWeekStartDay = weekStartDay;
+        this.weekStartDay = weekStartDay;
 
-        mCalendar = Calendar.getInstance();
-        mCalendar.set(Calendar.YEAR, year);
-        mCalendar.set(Calendar.MONTH, month);
-        mCalendar.set(Calendar.DAY_OF_MONTH, 1);
-        mCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        mCalendar.set(Calendar.MINUTE, 0);
-        mCalendar.set(Calendar.SECOND, 0);
-        mCalendar.getTimeInMillis();
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.getTimeInMillis();
 
         recalculate();
     }
 
-
-    public MonthDisplayUtil(int year, int month) {
-        this(year, month, Calendar.SUNDAY);
-    }
-
-
+    /**
+     * get year.
+     * @return year
+     */
     public int getYear() {
-        return mCalendar.get(Calendar.YEAR);
-    }
-
-    public int getMonth() {
-        return mCalendar.get(Calendar.MONTH);
-    }
-
-
-    public int getWeekStartDay() {
-        return mWeekStartDay;
+        return calendar.get(Calendar.YEAR);
     }
 
     /**
+     * get month.
+     * @return month
+     */
+    public int getMonth() {
+        return calendar.get(Calendar.MONTH);
+    }
+
+    /**
+     * get week start day.
+     * @return week start day
+     */
+    public int getWeekStartDay() {
+        return weekStartDay;
+    }
+
+    /**
+     * get first day of the month.
      * @return The first day of the month using a constants such as
      *   {@link Calendar#SUNDAY}.
      */
     public int getFirstDayOfMonth() {
-        return mCalendar.get(Calendar.DAY_OF_WEEK);
+        return calendar.get(Calendar.DAY_OF_WEEK);
     }
 
     /**
+     * get number days in the month.
      * @return The number of days in the month.
      */
     public int getNumberOfDaysInMonth() {
-        return mNumDaysInMonth;
+        return numDaysInMonth;
     }
 
 
     /**
+     * get offset.
      * @return The offset from displaying everything starting on the very first
-     *   box.  For example, if the calendar is set to display the first day of
-     *   the week as Sunday, and the month starts on a Wednesday, the offset is 3.
+     *     box.  For example, if the calendar is set to display the first day of
+     *     the week as Sunday, and the month starts on a Wednesday, the offset is 3.
      */
     public int getOffset() {
-        return mOffset;
+        return offset;
     }
 
-
     /**
+     * get digits.
      * @param row Which row (0-5).
      * @return the digits of the month to display in one
-     * of the 6 rows of a calendar month display.
+     *     of the 6 rows of a calendar month display.
      */
-    public int[] getDigitsForRow(int row) {
+    public int[] getDigitsForRow(final int row) {
         if (row < 0 || row > 5) {
             throw new IllegalArgumentException("row " + row
                     + " out of range (0-5)");
         }
 
-        int [] result = new int[7];
+        int[] result = new int[7];
         for (int column = 0; column < 7; column++) {
             result[column] = getDayAt(row, column);
         }
@@ -104,89 +134,57 @@ public class MonthDisplayUtil {
     }
 
     /**
+     * getDayAt at specified row & col.
      * @param row The row, 0-5, starting from the top.
      * @param column The column, 0-6, starting from the left.
      * @return The day at a particular row, column
      */
-    public int getDayAt(int row, int column) {
-        System.out.println("offSet 111 "+row+" "+column);
-        System.out.println("offSet 222 "+mOffset+" "+mNumDaysInPrevMonth);
-        if (row == 0 && column < mOffset) {
-            System.out.println("offSet 333 "+(mNumDaysInPrevMonth+column-mOffset));
-            return mNumDaysInPrevMonth + column - mOffset+1;
+    public int getDayAt(final int row, final int column) {
+        if (row == 0 && column < offset) {
+            return numDaysInPrevMonth + column - offset + 1;
         }
-
-        int day = 7 * row + column - mOffset + 1;
-        System.out.println("offSet 444 "+day);
-        return (day > mNumDaysInMonth) ?
-                day - mNumDaysInMonth : day;
+        int day = 7 * row + column - offset + 1;
+        return (day > numDaysInMonth)
+                ? day - numDaysInMonth : day;
     }
 
-    /** @return Which row day is in.*
+    /**
+     * is within current month.
+     * @param row row
+     * @param column col
+     * @return Whether the row and column fall within the month.
      *
      */
-    public int getRowOf(int day) {
-        return (day + mOffset - 1) / 7;
-    }
-
-    /**
-     * @return Which column day is in.
-     */
-    public int getColumnOf(int day) {
-        return (day + mOffset - 1) % 7;
-    }
-
-    /**
-     * Decrement the month.
-     */
-    public void previousMonth() {
-        mCalendar.add(Calendar.MONTH, -1);
-        recalculate();
-    }
-
-    /**
-     * Increment the month.
-     */
-    public void nextMonth() {
-        mCalendar.add(Calendar.MONTH, 1);
-        recalculate();
-    }
-
-    /**
-     * @return Whether the row and column fall within the month.
-     */
-    public boolean isWithinCurrentMonth(int row, int column) {
+    public boolean isWithinCurrentMonth(final int row, final int column) {
 
         if (row < 0 || column < 0 || row > 5 || column > 6) {
             return false;
         }
 
-        if (row == 0 && column < mOffset) {
+        if (row == 0 && column < offset) {
             return false;
         }
 
-        int day = 7 * row + column - mOffset + 1;
-        if (day > mNumDaysInMonth) {
+        int day = 7 * row + column - offset + 1;
+        if (day > numDaysInMonth) {
             return false;
         }
         return true;
     }
 
-
-    // helper method that recalculates cached values based on current month / year
+    /**
+     * re calculate.
+     */
     private void recalculate() {
-
-        mNumDaysInMonth = mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-
-        mCalendar.add(Calendar.MONTH, -1);
-        mNumDaysInPrevMonth = mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        mCalendar.add(Calendar.MONTH, 1);
-
+        numDaysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        calendar.add(Calendar.MONTH, -1);
+        numDaysInPrevMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        calendar.add(Calendar.MONTH, 1);
         int firstDayOfMonth = getFirstDayOfMonth();
-        int offset = firstDayOfMonth - mWeekStartDay;
+        int offset = firstDayOfMonth - weekStartDay;
         if (offset < 0) {
             offset += 7;
         }
-        mOffset = offset;
+        this.offset = offset;
     }
 }

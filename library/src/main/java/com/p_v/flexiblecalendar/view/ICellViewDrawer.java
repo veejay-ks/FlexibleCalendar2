@@ -3,6 +3,7 @@ package com.p_v.flexiblecalendar.view;
 import com.p_v.flexiblecalendar.FlexibleCalendarView;
 
 /**
+ * ICellViewDrawer.
  * @author p-v
  **/
 public interface ICellViewDrawer {

@@ -1,19 +1,5 @@
 package com.p_v.flexiblecalendarexample.slice;
 
-//import android.os.Bundle;
-//import android.support.v7.app.ActionBarActivity;
-//import android.view.LayoutInflater;
-//import android.view.Menu;
-//import android.view.MenuItem;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.Button;
-//import android.widget.Toast;
-
-import com.p_v.flexiblecalendar.FlexibleCalendarView;
-import com.p_v.flexiblecalendar.entity.Event;
-import com.p_v.flexiblecalendar.view.BaseCellView;
-import com.p_v.flexiblecalendarexample.ResourceTable;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
 import ohos.agp.components.Button;
@@ -24,6 +10,9 @@ import ohos.agp.utils.Color;
 import ohos.agp.window.dialog.ToastDialog;
 import ohos.global.resource.NotExistException;
 import ohos.global.resource.WrongTypeException;
+import com.p_v.flexiblecalendar.FlexibleCalendarView;
+import com.p_v.flexiblecalendar.view.BaseCellView;
+import com.p_v.flexiblecalendarexample.ResourceTable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,35 +20,38 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-   /* public class CalendarActivity2 extends ActionBarActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);*/
-
+/**
+ * CalendarActivity.
+ */
 public class CalendarActivity2 extends AbilitySlice {
-    protected void onStart(Intent intent) {
+    /**
+     * onStart.
+     *
+     * @param intent intent
+     */
+    @Override
+    protected void onStart(final Intent intent) {
         super.onStart(intent);
         setUIContent(ResourceTable.Layout_activity_main);
         initView();
     }
 
+    /**
+     * Intiview.
+     */
     private void initView() {
         final FlexibleCalendarView calendarView = (FlexibleCalendarView) findComponentById(ResourceTable.Id_month_view);
-        System.out.println("FSC: calendarView - " + calendarView);
-        calendarView.setOnMonthChangeListener(new FlexibleCalendarView.OnMonthChangeListener() {
-            @Override
-            public void onMonthChange ( int year, int month, int direction){
-                Calendar cal = Calendar.getInstance();
-                cal.set(year, month, 1);
-                ToastDialog toastDialog = new ToastDialog(getContext());
-                toastDialog.setText(cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH) + " " + year);
-                toastDialog.show();
-            }
+        calendarView.setOnMonthChangeListener((int year, int month, int direction) -> {
+            Calendar cal = Calendar.getInstance();
+            cal.set(year, month, 1);
+            ToastDialog toastDialog = new ToastDialog(getContext());
+            toastDialog.setText(cal.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.ENGLISH) + " " + year);
+            toastDialog.show();
+
         });
         calendarView.setCalendarView(new FlexibleCalendarView.CalendarView() {
             @Override
-            public BaseCellView getCellView ( int position, Component convertView, ComponentContainer parent,int cellType){
+            public BaseCellView getCellView(final int position, final Component convertView, final ComponentContainer parent, final int cellType) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter scatter = LayoutScatter.getInstance(CalendarActivity2.this);
@@ -74,87 +66,59 @@ public class CalendarActivity2 extends AbilitySlice {
                         cellView.setTextSize(12);
                     }
                 } catch (IOException | NotExistException | WrongTypeException e) {
-
+                    e.printStackTrace();
                 }
                 return cellView;
             }
 
             @Override
-            public BaseCellView getWeekdayCellView(int position, Component convertView, ComponentContainer parent) {
+            public BaseCellView getWeekdayCellView(final int position, final Component convertView, final ComponentContainer parent) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter inflater = LayoutScatter.getInstance(CalendarActivity2.this);
-                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar2_week_cell_view,parent, false);
+                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar2_week_cell_view, parent, false);
                 }
                 return cellView;
             }
 
             @Override
-            public String getDayOfWeekDisplayValue ( int dayOfWeek, String defaultValue){
+            public String getDayOfWeekDisplayValue(final int dayOfWeek, final String defaultValue) {
                 return null;
             }
         });
 
-            calendarView.setEventDataProvider(new FlexibleCalendarView.EventDataProvider() {
-                @Override
-                public List<? extends Event> getEventsForTheDay(int year, int month, int day) {
-                    if (year == 2015 && month == 7 && day == 25) {
-                        List<CustomEvent> colorLst1 = new ArrayList<>();
-                        colorLst1.add(new CustomEvent(ResourceTable.Color_holo_green_dark));
-                        colorLst1.add(new CustomEvent(ResourceTable.Color_holo_blue_light));
-                        colorLst1.add(new CustomEvent(ResourceTable.Color_holo_purple));
-                        return (List<? extends Event>) colorLst1;
-                    }
-                    if (year == 2015 && month == 7 && day == 8) {
-                        List<CustomEvent> colorLst1 = new ArrayList<>();
-                        colorLst1.add(new CustomEvent(ResourceTable.Color_holo_green_dark));
-                        colorLst1.add(new CustomEvent(ResourceTable.Color_holo_blue_light));
-                        colorLst1.add(new CustomEvent(ResourceTable.Color_holo_purple));
-                        return (List<? extends Event>) colorLst1;
-                    }
-                    if (year == 2015 && month == 7 && day == 5) {
-                        List<CustomEvent> colorLst1 = new ArrayList<>();
-                        colorLst1.add(new CustomEvent(ResourceTable.Color_holo_purple));
-                        return (List<? extends Event>) colorLst1;
-                    }
-                    return null;
-                }
-            });
-            Button button = (Button) findComponentById(ResourceTable.Id_button);
-            button.setClickedListener(new Component.ClickedListener() {
-                @Override
-                public void onClick(Component component) {
-                    if (calendarView.isComponentDisplayed()) {
-                        calendarView.setVisibility(Component.HIDE);
-                        calendarView.collapse();
-                    } else {
-//                        calendarView.setVisibility(Component.HIDE);
-                        calendarView.expand();
-                    }
-                }
-            });
-
+        calendarView.setEventDataProvider((int year, int month, int day) -> {
+            List<CustomEvent> colorLst1 = null;
+            if (year == 2015 && month == 7 && day == 25) {
+                colorLst1 = new ArrayList<>();
+                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_green_dark));
+                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_blue_light));
+                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_purple));
+                return colorLst1;
+            }
+            if (year == 2015 && month == 7 && day == 8) {
+                colorLst1 = new ArrayList<>();
+                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_green_dark));
+                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_blue_light));
+                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_purple));
+                return colorLst1;
+            }
+            if (year == 2015 && month == 7 && day == 5) {
+                colorLst1 = new ArrayList<>();
+                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_purple));
+                return colorLst1;
+            }
+            return colorLst1;
+        });
+        Button button = (Button) findComponentById(ResourceTable.Id_button);
+        button.setClickedListener(component -> {
+            if (calendarView.isComponentDisplayed()) {
+                calendarView.setVisibility(Component.HIDE);
+                calendarView.collapse();
+            } else {
+                calendarView.expand();
+            }
+        });
     }
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(ResourceTable.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == ResourceTable.Id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 }
 

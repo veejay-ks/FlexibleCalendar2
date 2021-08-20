@@ -7,8 +7,17 @@ package com.p_v.flexiblecalendar.entity;
  */
 public class SelectedDateItem {
 
+    /**
+     * day.
+     */
     private int day;
+    /**
+     * month.
+     */
     private int month;
+    /**
+     * year.
+     */
     private int year;
 
     /**
@@ -20,43 +29,82 @@ public class SelectedDateItem {
      *
      * @param day day
      */
-    public SelectedDateItem(int year, int month, int day) {
+    public SelectedDateItem(final int year, final int month, final int day) {
         this.year = year;
         this.month = month;
         this.day = day;
     }
 
+    /**
+     * clone.
+     *
+     * @return selected date
+     */
     @Override
     public SelectedDateItem clone() {
         return new SelectedDateItem(year, month, day);
     }
 
+    /**
+     * get day.
+     *
+     * @return get day
+     */
     public int getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    /**
+     * set day.
+     *
+     * @param day day
+     */
+    public void setDay(final int day) {
         this.day = day;
     }
 
+    /**
+     * get month.
+     *
+     * @return get month
+     */
     public int getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    /**
+     * set month.
+     * @param month month
+     */
+    public void setMonth(final int month) {
         this.month = month;
     }
 
+    /**
+     * get year.
+     *
+     * @return get year
+     */
     public int getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    /**
+     * set year.
+     *
+     * @param year year
+     */
+    public void setYear(final int year) {
         this.year = year;
     }
 
+    /**
+     * equals.
+     *
+     * @return bool val
+     */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -76,6 +124,11 @@ public class SelectedDateItem {
 
     }
 
+    /**
+     * hashcode.
+     *
+     * @return int val
+     */
     @Override
     public int hashCode() {
         int result = day;

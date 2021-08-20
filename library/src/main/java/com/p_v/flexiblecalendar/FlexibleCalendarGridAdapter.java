@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * FlexiCalendarGridAdapter.
+ * @author p-v
  */
 class FlexibleCalendarGridAdapter extends BaseItemProvider {
 

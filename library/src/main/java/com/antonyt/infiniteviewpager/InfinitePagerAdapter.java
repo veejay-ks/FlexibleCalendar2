@@ -3,7 +3,6 @@ package com.antonyt.infiniteviewpager;
 import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
 import ohos.agp.components.PageSliderProvider;
-import ohos.agp.database.DataSetSubscriber;
 import ohos.app.Context;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
@@ -13,6 +12,9 @@ import ohos.hiviewdfx.HiLogLabel;
  */
 public class InfinitePagerAdapter extends PageSliderProvider {
 
+    /**
+     * TAG.
+     */
     private static final String TAG = "InfinitePagerAdapter";
     /**
      * TYPE.
@@ -26,13 +28,27 @@ public class InfinitePagerAdapter extends PageSliderProvider {
      * LABEL.
      */
     private static final HiLogLabel LABEL = new HiLogLabel(HILOG_TYPE, HILOG_DOMAIN, TAG);
+    /**
+     * DEBUG.
+     */
     private static final boolean DEBUG = true;
+    /**
+     * MAX_VAL.
+     */
     private static final int MAX_VAL = 10000;
-
+    /**
+     * adapter.
+     */
     private PageSliderProvider adapter;
-
+    /**
+     * fake count.
+     */
     private int fakeCount;
+    /**
+     * LABEL.
+     */
     private Context context;
+
     /**
      * To specify the adapter and context.
      *
@@ -40,15 +56,23 @@ public class InfinitePagerAdapter extends PageSliderProvider {
      *
      * @param context context
      */
-
-    public InfinitePagerAdapter(PageSliderProvider adapter, Context context) {
+    public InfinitePagerAdapter(final PageSliderProvider adapter, final Context context) {
         this.adapter = adapter;
         this.fakeCount = -1;
         this.context = context;
     }
 
+    /**
+     * page in container.
+     *
+     * @param componentContainer container
+     *
+     * @param position position
+     *
+     * @return object
+     */
     @Override
-    public Object createPageInContainer(ComponentContainer componentContainer, int position) {
+    public Object createPageInContainer(final ComponentContainer componentContainer, final int position) {
         int virtualPosition = position % getRealCount();
         debug("instantiateItem: real position: " + position);
         debug("instantiateItem: virtual position: " + virtualPosition);
@@ -57,8 +81,17 @@ public class InfinitePagerAdapter extends PageSliderProvider {
         return adapter.createPageInContainer(componentContainer, virtualPosition);
     }
 
+    /**
+     * destroy container.
+     *
+     * @param componentContainer container
+     *
+     * @param position position
+     *
+     * @param object object
+     */
     @Override
-    public void destroyPageFromContainer(ComponentContainer componentContainer, int position, Object object) {
+    public void destroyPageFromContainer(final ComponentContainer componentContainer, final int position, final Object object) {
         int virtualPosition = position % getRealCount();
         debug("destroyItem: real position: " + position);
         debug("destroyItem: virtual position: " + virtualPosition);
@@ -67,11 +100,25 @@ public class InfinitePagerAdapter extends PageSliderProvider {
         adapter.destroyPageFromContainer(componentContainer, virtualPosition, object);
     }
 
+    /**
+     * page in container.
+     *
+     * @param component component
+     *
+     * @param object object
+     *
+     * @return bool val
+     */
     @Override
-    public boolean isPageMatchToObject(Component component, Object object) {
+    public boolean isPageMatchToObject(final Component component, final Object object) {
         return adapter.isPageMatchToObject(component, object);
     }
 
+    /**
+     * get count.
+     *
+     * @return int val
+     */
     @Override
     public int getCount() {
         if (getRealCount() == 0) {
@@ -92,27 +139,54 @@ public class InfinitePagerAdapter extends PageSliderProvider {
         return adapter.getCount();
     }
 
+    /**
+     * on update finish.
+     *
+     * @param componentContainer container
+     */
     @Override
-    public void onUpdateFinished(ComponentContainer componentContainer) {
+    public void onUpdateFinished(final ComponentContainer componentContainer) {
         adapter.onUpdateFinished(componentContainer);
     }
 
+    /**
+     * start update.
+     *
+     * @param container container
+     */
     @Override
-    public void startUpdate(ComponentContainer container) {
+    public void startUpdate(final ComponentContainer container) {
         adapter.startUpdate(container);
     }
 
+    /**
+     * get page title.
+     *
+     * @param position position
+     *
+     * @return page title
+     */
     @Override
-    public String getPageTitle(int position) {
+    public String getPageTitle(final int position) {
         int virtualPosition = position % getRealCount();
         return adapter.getPageTitle(virtualPosition);
     }
 
+    /**
+     * get page index.
+     *
+     * @param object object
+     *
+     * @return page index
+     */
     @Override
-    public int getPageIndex(Object object) {
+    public int getPageIndex(final Object object) {
         return adapter.getPageIndex(object);
     }
 
+    /**
+     * notify data changed.
+     */
     @Override
     public void notifyDataChanged() {
         adapter.notifyDataChanged();
@@ -120,12 +194,11 @@ public class InfinitePagerAdapter extends PageSliderProvider {
     }
 
     /*
-     * End delegation
+     * End delegation.
      *
      * @param message message
      */
-
-    private void debug(String message) {
+    private void debug(final String message) {
         if (DEBUG) {
             HiLog.info(LABEL, TAG + " " + message);
         }
@@ -137,15 +210,7 @@ public class InfinitePagerAdapter extends PageSliderProvider {
      *
      * @param fakeCount count
      */
-    public void setFakeCount(int fakeCount) {
+    public void setFakeCount(final int fakeCount) {
         this.fakeCount = fakeCount;
-    }
-
-    public void unregisterDataSetObserver(DataSetSubscriber observer) {
-        super.addDataSubscriber(observer);
-    }
-
-    public void registerDataSetObserver(DataSetSubscriber observer) {
-        super.removeDataSubscriber(observer);
     }
 }

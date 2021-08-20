@@ -4,17 +4,18 @@ import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
 
 /**
+ * IDateCellViewDrawer.
  * @author p-v
  */
 public interface IDateCellViewDrawer extends ICellViewDrawer {
     /**
-     * Date Cell view
+     * Date Cell view.
      *
-     * @param position
-     * @param convertView
-     * @param parent
-     * @param cellType
-     * @return
+     * @param position position
+     * @param convertView convertview
+     * @param parent parent
+     * @param cellType celltype
+     * @return getcellview
      */
     BaseCellView getCellView(int position, Component convertView, ComponentContainer parent,
                              @BaseCellView.CellType int cellType);

@@ -7,32 +7,56 @@ import ohos.agp.components.AttrSet;
 /**
  * Created by p-v on 15/07/15.
  */
-public class SquareCellView extends CircularEventCellView implements Component.EstimateSizeListener{
+public class SquareCellView extends CircularEventCellView implements Component.EstimateSizeListener {
 
-    public SquareCellView(Context context) {
+    /**
+     * arg constructor.
+     * @param context context
+     */
+    public SquareCellView(final Context context) {
         super(context);
-        setListeners();
+        setListenersSqCellView();
     }
 
+    /**
+     * arg constructor.
+     * @param context context
+     * @param attrs attrs
+     */
     public SquareCellView(Context context, AttrSet attrs) {
         super(context, attrs);
-        setListeners();
+        setListenersSqCellView();
     }
 
-    public SquareCellView(Context context, AttrSet attrs, int defStyleAttr) {
+    /**
+     * arg constructor.
+     * @param context context
+     * @param attrs attrs
+     * @param defStyleAttr defstyleattrs
+     */
+    public SquareCellView(Context context, AttrSet attrs, String defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setListeners();
+        setListenersSqCellView();
     }
 
-    private void setListeners() {
+    /**
+     * set listeners.
+     */
+    private void setListenersSqCellView() {
         setEstimateSizeListener(this);
     }
 
 
+    /**
+     * onestimatesize.
+     *
+     * @param widthMeasureSpec width
+     * @param heightMeasureSpec height
+     */
+    @Override
     public boolean onEstimateSize(int widthMeasureSpec, int heightMeasureSpec) {
         //making sure the cell view is a square
         super.setEstimatedSize(widthMeasureSpec, widthMeasureSpec);
         return true;
     }
-
 }

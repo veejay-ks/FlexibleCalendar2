@@ -1,100 +1,129 @@
 package com.p_v.flexiblecalendar.view;
 
-import com.p_v.flexiblecalendar.entity.Event;
 import ohos.agp.components.AttrSet;
 import ohos.agp.components.Component;
+import ohos.agp.components.Component.DrawTask;
 import ohos.agp.utils.Color;
 import ohos.agp.utils.Rect;
 import ohos.app.Context;
 import ohos.agp.render.Canvas;
 import ohos.agp.render.Paint;
-
+import com.p_v.flexiblecalendar.entity.Event;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import ohos.agp.components.Component.DrawTask;
 
 /**
+ * CircularEventCellView.
  * @author p-v
  */
 public class CircularEventCellView extends BaseCellView implements DrawTask, Component.EstimateSizeListener {
 
+    /**
+     * event circle.
+     */
     private int eventCircleY;
+    /**
+     * radius.
+     */
     private int radius;
+    /**
+     * padding.
+     */
     private int padding;
+    /**
+     * left most position.
+     */
     private int leftMostPosition = Integer.MIN_VALUE;
+    /**
+     * paint list.
+     */
     private List<Paint> paintList;
-    private int w;
-    private int h;
-    private int oldw;
-    private int oldh;
-    public static int CircularEventCellView_event_radius;
-    public static int CircularEventCellView_event_circle_padding;
-    public static final String CircularEventCellView_event_radius_attr = "state_date_today";
-    public static final String CircularEventCellView_event_circle_padding_attr = "state_date_regular";
-    public static int DEFAULT_VAL_RAD = 5;
-    public static int DEFAULT_VAL_CIR = 1;
+    /**
+     * default val rad.
+     */
+    public static final int DEFAULT_VAL_RAD = 5;
+    /**
+     * default val cir.
+     */
+    public static final int DEFAULT_VAL_CIR = 1;
 
-    public CircularEventCellView(Context context) {
+    /**
+     * arg constructor.
+     *
+     * @param context context
+     */
+    public CircularEventCellView(final Context context) {
         super(context);
         setListeners();
     }
 
-    public CircularEventCellView(Context context, AttrSet attrs) {
+    /**
+     * arg constructor.
+     * @param context context
+     * @param attrs attrs
+     */
+    public CircularEventCellView(final Context context, final AttrSet attrs) {
         super(context, attrs);
-        init(attrs);
         setListeners();
     }
 
-    public CircularEventCellView(Context context, AttrSet attrs, int defStyleAttr) {
+    /**
+     * arg constructor.
+     * @param context context
+     * @param attrs attrs
+     * @param defStyleAttr defstyleattrs
+     */
+    public CircularEventCellView(final Context context, final AttrSet attrs, final String defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(attrs);
         setListeners();
     }
 
+    /**
+     * set listeners.
+     */
     private void setListeners() {
         addDrawTask(this);
         setEstimateSizeListener(this);
     }
 
-    public void init(AttrSet attrs) {
-        boolean isEventRadius = attrs.getAttr(CircularEventCellView_event_radius_attr).isPresent();
-        if (isEventRadius) {
-            CircularEventCellView_event_radius = attrs.getAttr(CircularEventCellView_event_radius_attr).get().getIntegerValue();
-        } else {
-            CircularEventCellView_event_radius = DEFAULT_VAL_RAD;
-        }
-        boolean isEventCircle = attrs.getAttr(CircularEventCellView_event_circle_padding_attr).isPresent();
-        if (isEventCircle) {
-            CircularEventCellView_event_circle_padding = attrs.getAttr(CircularEventCellView_event_circle_padding_attr).get().getIntegerValue();
-        } else {
-            CircularEventCellView_event_circle_padding = DEFAULT_VAL_CIR;
-        }
-    }
-
-    private int calculateStartPoint(int offset) {
+    /**
+     * calc start point.
+     *
+     * @param offset offset
+     * @return int val
+     */
+    private int calculateStartPoint(final int offset) {
         return leftMostPosition + offset * (2 * (radius + padding));
     }
 
+    /**
+     * set events.
+     *
+     * @param colorList color
+     */
     @Override
-    public void setEvents(List<? extends Event> colorList) {
+    public void setEvents(final List<? extends Event> colorList) {
         if (colorList != null) {
             paintList = new ArrayList<>(colorList.size());
             for (Event e : colorList) {
                 Paint eventPaint = new Paint();
-                eventPaint.setStyle(Paint.Style.FILL_STYLE);//FILL is replaced as FILL_STYLE
-//                eventPaint.setColor(getContext().getResourceManager().getColor(e.getColor()));
+                eventPaint.setStyle(Paint.Style.FILL_STYLE);
                 eventPaint.setColor(Color.GREEN);
                 paintList.add(eventPaint);
             }
             invalidate();
-            postLayout();//requestLayout();
+            postLayout();
         }
     }
 
-
+    /**
+     * on draw.
+     * @param component component
+     * @param canvas canvas
+     */
     @Override
-    public void onDraw(Component component, Canvas canvas) {
+    public void onDraw(final Component component, final Canvas canvas) {
 
         Set<Integer> stateSet = getStateSet();
 
@@ -108,8 +137,14 @@ public class CircularEventCellView extends BaseCellView implements DrawTask, Com
         }
     }
 
+    /**
+     * onestimatesize.
+     *
+     * @param i i
+     * @param i1 i1
+     */
     @Override
-    public boolean onEstimateSize(int i, int i1) {
+    public boolean onEstimateSize(final int i, final int i1) {
         Set<Integer> stateSet = getStateSet();
 
         //initialize paint objects only if there is no state or just one state i.e. the regular day state
@@ -121,7 +156,6 @@ public class CircularEventCellView extends BaseCellView implements DrawTask, Com
             p.setTextSize(getTextSize());
             Rect rect = new Rect();
             p.getTextBounds("31");
-//            p.getTextBounds("31", 0, 1, rect); // measuring using fake text
 
             eventCircleY = (3 * getHeight() + rect.getHeight()) / 4;
 
@@ -132,9 +166,7 @@ public class CircularEventCellView extends BaseCellView implements DrawTask, Com
                     leftMostPosition = leftMostPosition + radius + padding;
                 }
             }
-
         }
-
         return false;
     }
 }

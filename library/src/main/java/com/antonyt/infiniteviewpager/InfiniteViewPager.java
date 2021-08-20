@@ -11,40 +11,69 @@ import ohos.app.Context;
  */
 public class InfiniteViewPager extends PageSlider {
 
-    public InfiniteViewPager(Context context) {
+    /**
+     * constructor.
+     *
+     * @param context context
+     */
+    public InfiniteViewPager(final Context context) {
         super(context);
     }
 
-    public InfiniteViewPager(Context context, AttrSet attrs) {
+    /**
+     * 2-arg constructor.
+     *
+     * @param context context
+     *
+     * @param attrs attrs
+     */
+    public InfiniteViewPager(final Context context, final AttrSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * set provider.
+     *
+     * @param provider
+     */
     @Override
-    public void setProvider(PageSliderProvider provider) {
+    public void setProvider(final PageSliderProvider provider) {
         super.setProvider(provider);
         setCurrentPage(0);
     }
 
-    public void setProvider(PageSliderProvider provider, int lastPosition) {
-        super.setProvider(provider);
-        super.setCurrentPage(lastPosition, false);
-    }
-
+    /**
+     * set current page.
+     *
+     * @param itemPos itempos
+     */
     @Override
-    public void setCurrentPage(int itemPos) {
+    public void setCurrentPage(final int itemPos) {
         setCurrentPage(itemPos, false);
     }
 
+    /**
+     * set current page.
+     *
+     * @param itemPos itempos
+     *
+     * @param smoothScroll smoothscroll
+     */
     @Override
-    public void setCurrentPage(int itemPos, boolean smoothScroll) {
+    public void setCurrentPage(final int itemPos, final boolean smoothScroll) {
         if (getProvider().getCount() == 0) {
             super.getCurrentPage();
             return;
         }
-        itemPos = getOffsetAmount() + (itemPos % getProvider().getCount());
-        super.setCurrentPage(itemPos, smoothScroll);
+        int itemPosition = getOffsetAmount() + (itemPos % getProvider().getCount());
+        super.setCurrentPage(itemPosition, smoothScroll);
     }
 
+    /**
+     * get current page.
+     *
+     * @return current page
+     */
     @Override
     public int getCurrentPage() {
         if (getProvider().getCount() == 0) {
@@ -61,7 +90,9 @@ public class InfiniteViewPager extends PageSlider {
     }
 
     /**
-     *To get the offSetAmount.
+     * To get the offSetAmount.
+     *
+     * @return offset
      */
     public int getOffsetAmount() {
         if (getProvider().getCount() == 0) {

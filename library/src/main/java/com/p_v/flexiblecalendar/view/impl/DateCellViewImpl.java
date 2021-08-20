@@ -26,20 +26,38 @@ public class DateCellViewImpl implements IDateCellViewDrawer {
      * LABEL.
      */
     private static final HiLogLabel LABEL = new HiLogLabel(HILOG_TYPE, HILOG_DOMAIN, "FlexibleCalendar");
-
+    /**
+     * calendarview.
+     */
     private FlexibleCalendarView.CalendarView calendarView;
-
-    public DateCellViewImpl(FlexibleCalendarView.CalendarView calendarView) {
+    /**
+     * arg constructor.
+     *
+     * @param calendarView calendarview
+     */
+    public DateCellViewImpl(final FlexibleCalendarView.CalendarView calendarView) {
         this.calendarView = calendarView;
     }
 
+    /**
+     * set calendarview.
+     *
+     * @param calendarView calendarview
+     */
     @Override
-    public void setCalendarView(FlexibleCalendarView.CalendarView calendarView) {
+    public void setCalendarView(final FlexibleCalendarView.CalendarView calendarView) {
         this.calendarView = calendarView;
     }
 
+    /**
+     * get cell view.
+     * @param position position
+     * @param convertView convertview
+     * @param parent parent
+     * @param cellType celltype
+     */
     @Override
-    public BaseCellView getCellView(int position, Component convertView, ComponentContainer parent, @BaseCellView.CellType int cellType) {
+    public BaseCellView getCellView(final int position, final Component convertView, final ComponentContainer parent, final @BaseCellView.CellType int cellType) {
         HiLog.info(LABEL, " FlexibleCalendarGridAdapter calen " + calendarView);
         return calendarView.getCellView(position, convertView, parent, cellType);
     }

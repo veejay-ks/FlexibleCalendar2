@@ -7,22 +7,36 @@ package com.p_v.flexiblecalendar.entity;
  */
 public class CalendarEvent implements Event {
 
+    /**
+     * day.
+     */
     private int color;
 
-    public CalendarEvent() {
-
-    }
-
-    public CalendarEvent(int color) {
+    /**
+     * arg constructor.
+     *
+     * @param color color
+     */
+    public CalendarEvent(final int color) {
         this.color = color;
     }
 
+    /**
+     * get color.
+     *
+     * @return color
+     */
     @Override
     public int getColor() {
         return color;
     }
 
-    public void setColor(int color) {
+    /**
+     * set color.
+     *
+     * @param color color
+     */
+    public void setColor(final int color) {
         this.color = color;
     }
 }

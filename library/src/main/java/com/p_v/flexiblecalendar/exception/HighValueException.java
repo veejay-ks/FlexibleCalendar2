@@ -7,11 +7,12 @@ package com.p_v.flexiblecalendar.exception;
  */
 public class HighValueException extends RuntimeException {
 
-    public HighValueException() {
-        super();
-    }
-
-    public HighValueException(String message) {
+    /**
+     * arg constructor.
+     *
+     * @param message message
+     */
+    public HighValueException(final String message) {
         super(message);
     }
 

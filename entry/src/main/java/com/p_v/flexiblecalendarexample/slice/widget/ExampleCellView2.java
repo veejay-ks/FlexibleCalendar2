@@ -1,14 +1,5 @@
 package com.p_v.flexiblecalendarexample.slice.widget;
 
-//import android.content.Context;
-//import android.graphics.Canvas;
-//import android.graphics.Paint;
-//import android.graphics.Rect;
-//import android.util.AttributeSet;
-
-import com.p_v.flexiblecalendar.entity.Event;
-import com.p_v.flexiblecalendar.view.BaseCellView;
-import com.p_v.flexiblecalendarexample.ResourceTable;
 import ohos.agp.components.AttrSet;
 import ohos.agp.components.Component;
 import ohos.agp.render.Canvas;
@@ -17,65 +8,110 @@ import ohos.agp.utils.Rect;
 import ohos.app.Context;
 import ohos.global.resource.NotExistException;
 import ohos.global.resource.WrongTypeException;
-
+import com.p_v.flexiblecalendar.entity.Event;
+import com.p_v.flexiblecalendar.view.BaseCellView;
+import com.p_v.flexiblecalendarexample.ResourceTable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Another ExampleCellView class.
+ *
  * @author p-v
  */
 public class ExampleCellView2 extends BaseCellView implements Component.DrawTask, Component.EstimateSizeListener {
+
+    /**
+     * To define eventCircle.
+     */
     private int eventCircleY;
+
+    /**
+     * To define radius.
+     */
     private int radius;
+
+    /**
+     * To define padding.
+     */
     private int padding;
+
+    /**
+     * MIN_VALUE = -2147483648.
+     */
     private int leftMostPosition = Integer.MIN_VALUE;
+
+    /**
+     * List object to hold the paintList values.
+     */
     private List<Paint> paintList;
 
-    public ExampleCellView2(Context context) {
+    /**
+     * ExampleCellView Constructor.
+     *
+     * @param context context
+     */
+    public ExampleCellView2(final Context context) {
         super(context);
         init();
     }
 
-    public ExampleCellView2(Context context, AttrSet attrs) {
+    /**
+     * ExampleCellView Constructor.
+     *
+     * @param context context
+     *
+     * @param attrs attrs
+     */
+    public ExampleCellView2(final Context context, final AttrSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ExampleCellView2(Context context, AttrSet attrs, int defStyleAttr) {
+    /**
+     * ExampleCellView Constructor.
+     *
+     * @param context context
+     *
+     * @param attrs attrs
+     *
+     * @param defStyleAttr defStyleAttr
+     */
+    public ExampleCellView2(final Context context, final AttrSet attrs, final String defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    /*private void init() {
-        radius = (int) getResourceManager().getElement().getDimensionValue(ResourceTable.Dimen.example_cell_view_event_radius);
-        padding = (int) getResourceManager().getElement().getDimensionValue(ResourceTable.Dimen.example_cell_view_event_spacing);
-    }*/
+    /**
+     * init method.
+     */
     private void init()  {
         try {
             radius = (int) getResourceManager().getElement(ResourceTable.Float_example_cell_view_event_radius).getFloat();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NotExistException e) {
-            e.printStackTrace();
-        } catch (WrongTypeException e) {
+        } catch (IOException | NotExistException | WrongTypeException e) {
             e.printStackTrace();
         }
         try {
             padding = (int) getResourceManager().getElement(ResourceTable.Float_example_cell_view_event_spacing).getFloat();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NotExistException e) {
-            e.printStackTrace();
-        } catch (WrongTypeException e) {
+        } catch (IOException | NotExistException | WrongTypeException e) {
             e.printStackTrace();
         }
     }
 
-
-    //@Override
-    protected void onEstimateSize(int w, int h, int oldw, int oldh) {
-       // super.onEstimateSize(w, h, oldw, oldh);
+    /**
+     * To estimate the size.
+     *
+     * @param w w
+     *
+     * @param h h
+     *
+     * @param oldw oldw
+     *
+     * @param oldh oldh
+     *
+     */
+    protected void onEstimateSize(final int w, final int h, final int oldw, final int oldh) {
 
         if (paintList != null) {
             int num = paintList.size();
@@ -84,8 +120,6 @@ public class ExampleCellView2 extends BaseCellView implements Component.DrawTask
             p.setTextSize(getTextSize());
 
             Rect rect = new Rect();
-            //p.getTextBounds("31", 0, 1, rect); // measuring using fake text
-
             eventCircleY = (3 * getHeight() + rect.getHeight()) / 4;
 
             //calculate left most position for the circle
@@ -99,20 +133,30 @@ public class ExampleCellView2 extends BaseCellView implements Component.DrawTask
         }
     }
 
-    private int calculateStartPoint(int offset) {
+    /**
+     * To calculate the Start point.
+     *
+     * @param offset offset
+     *
+     * @return integer
+     */
+    private int calculateStartPoint(final int offset) {
         return leftMostPosition + offset * (2 * (radius + padding));
     }
 
+    /**
+     * set events.
+     *
+     * @param colorList colorlist
+     */
     @Override
     public void setEvents(List<? extends Event> colorList) {
         if (colorList != null) {
             paintList = new ArrayList<>(colorList.size());
             for (Event e : colorList) {
                 Paint eventPaint = new Paint();
-                //Paint eventPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 eventPaint.setAntiAlias(true);
                 eventPaint.setStyle(Paint.Style.FILL_STYLE);
-                //eventPaint.setColor(getContext().getResourceManager().getColor(e.getColor()));
                 paintList.add(eventPaint);
             }
             invalidate();
@@ -120,22 +164,30 @@ public class ExampleCellView2 extends BaseCellView implements Component.DrawTask
         }
     }
 
+    /**
+     * onestimate size.
+     *
+     * @param widthMeasureSpec width
+     * @param heightMeasureSpec height
+     */
     @Override
-    public boolean onEstimateSize(int widthMeasureSpec, int heightMeasureSpec) {
-        //for a square cell
-//        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+    public boolean onEstimateSize(final int widthMeasureSpec, final int heightMeasureSpec) {
         return true;
     }
 
+    /**
+     * ondraw.
+     *
+     * @param component component
+     * @param canvas canvas
+     */
     @Override
-    public void onDraw(Component component, Canvas canvas) {
-        // super.onDraw(canvas);
+    public void onDraw(final Component component, final Canvas canvas) {
         if (paintList != null) {
             int num = paintList.size();
             for (int i = 0; i < num; i++) {
                 canvas.drawCircle(calculateStartPoint(i), eventCircleY, radius, paintList.get(i));
             }
         }
-        
     }
 }

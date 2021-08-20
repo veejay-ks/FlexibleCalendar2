@@ -15,7 +15,8 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * MonthViewPagerAdapter class.
+ * FlexibleCalendarView.
+ * @author p-v
  */
 public class FlexibleCalendarView extends DirectionalLayout implements
         FlexibleCalendarGridAdapter.OnDateCellItemClickListener,

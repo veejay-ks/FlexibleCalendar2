@@ -1,6 +1,5 @@
 package com.p_v.flexiblecalendar.view;
 
-import com.p_v.flexiblecalendar.entity.Event;
 import ohos.agp.components.AttrSet;
 import ohos.agp.components.Component;
 import ohos.agp.render.Canvas;
@@ -8,99 +7,120 @@ import ohos.agp.render.Paint;
 import ohos.agp.utils.Color;
 import ohos.agp.utils.Rect;
 import ohos.app.Context;
-
-
+import com.p_v.flexiblecalendar.entity.Event;
 import java.util.List;
 
 /**
- * Cell view with the event count
+ * Cell view with the event count.
  *
  * @author p-v
  */
 public class EventCountCellView extends BaseCellView implements Component.DrawTask, Component.EstimateSizeListener {
 
+    /**
+     * paint.
+     */
     private Paint mPaint;
+    /**
+     * text paint.
+     */
     private Paint mTextPaint;
+    /**
+     * event count.
+     */
     private int mEventCount;
+    /**
+     * event circle y.
+     */
     private int eventCircleY;
+    /**
+     * event circle x.
+     */
     private int eventCircleX;
+    /**
+     * texty.
+     */
     private int mTextY;
-    public static final String EVENT_RADIUS = "event_count_radius";
-    public static final String EVENT_BACKGROUND = "event_background";
-    public static final String EVENT_TEXTCOLOR = "event_count_text_color";
-    public static final String EVENT_TEXTSIZE = "event_text_size";
-    private int eventRadius;
-    private Color eventTextColor;
-    private Color eventBackground;
-    private int eventTextSize;
-    public static int DEFAULT_VAL_RADIUS = 15;
-    public static Color DEFAULT_VAL_BACKGROUND = Color.BLACK;
-    public static Color DEFAULT_VAL_TEXTCOLOR = Color.WHITE;
-    public static int DEFAULT_VAL_TEXTSIZE = -1;
+    /**
+     * event radius.
+     */
+    private int eventRadius = 15;
+    /**
+     * event text color.
+     */
+    private Color eventTextColor = Color.WHITE;
+    /**
+     * event b/g.
+     */
+    private Color eventBackground = Color.BLACK;
+    /**
+     * event text size.
+     */
+    private int eventTextSize = -1;
 
-    public EventCountCellView(Context context) {
+    /**
+     * arg constructor.
+     *
+     * @param context context
+     */
+    public EventCountCellView(final Context context) {
         super(context);
         setListeners();
     }
 
-    public EventCountCellView(Context context, AttrSet attrs) {
+    /**
+     * arg constructor.
+     * @param context context
+     * @param attrs attrs
+     */
+    public EventCountCellView(final Context context, final AttrSet attrs) {
         super(context, attrs);
-        init(attrs);
         setListeners();
     }
 
-    public EventCountCellView(Context context, AttrSet attrs, int defStyleAttr) {
+    /**
+     * arg constructor.
+     * @param context context
+     * @param attrs attrs
+     * @param defStyleAttr defstyleattrs
+     */
+    public EventCountCellView(final Context context, final AttrSet attrs, final String defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(attrs);
         setListeners();
     }
 
+    /**
+     * set listeners.
+     */
     private void setListeners() {
         addDrawTask(this);
         setEstimateSizeListener(this);
     }
 
-    public void init(AttrSet attrs) {
-        boolean isRadius = attrs.getAttr(EVENT_RADIUS).isPresent();
-        if (isRadius) {
-            eventRadius = attrs.getAttr(EVENT_RADIUS).get().getIntegerValue();
-        } else {
-            eventRadius = DEFAULT_VAL_RADIUS;
-        }
-        boolean isBG = attrs.getAttr(EVENT_BACKGROUND).isPresent();
-        if (isBG) {
-            eventBackground = attrs.getAttr(EVENT_BACKGROUND).get().getColorValue();
-        } else {
-            eventBackground = DEFAULT_VAL_BACKGROUND;
-        }
-        boolean isTextColor = attrs.getAttr(EVENT_TEXTCOLOR).isPresent();
-        if (isTextColor) {
-            eventTextColor = attrs.getAttr(EVENT_TEXTCOLOR).get().getColorValue();
-        } else {
-            eventTextColor = DEFAULT_VAL_TEXTCOLOR;
-        }
-        boolean isTextSize = attrs.getAttr(EVENT_TEXTSIZE).isPresent();
-        if (isTextSize) {
-            eventTextSize = attrs.getAttr(EVENT_TEXTSIZE).get().getIntegerValue();
-        } else {
-            eventTextSize = DEFAULT_VAL_TEXTSIZE;
-        }
-    }
-
+    /**
+     * set events.
+     * @param colorList colorlist
+     */
     @Override
-    public void setEvents(List<? extends Event> colorList) {
+    public void setEvents(final List<? extends Event> colorList) {
         if (colorList != null && !colorList.isEmpty()) {
             mEventCount = colorList.size();
             mPaint = new Paint();
             mPaint.setStyle(Paint.Style.FILL_STYLE);
             mPaint.setColor(eventBackground);
             invalidate();
-            postLayout();//requestLayout();
+            postLayout();
         }
     }
 
+    /**
+     * onestimatesize.
+     *
+     * @param i i
+     * @param i1 i1
+     */
     @Override
-    public boolean onEstimateSize(int i, int i1) {
+    public boolean onEstimateSize(final int i, final int i1) {
         if (mEventCount > 0) {
             Paint p = new Paint();
             p.setTextSize(getTextSize());
@@ -122,11 +142,16 @@ public class EventCountCellView extends BaseCellView implements Component.DrawTa
         return false;
     }
 
+    /**
+     * on draw.
+     * @param component component
+     * @param canvas canvas
+     */
     @Override
-    public void onDraw(Component component, Canvas canvas) {
+    public void onDraw(final Component component, final Canvas canvas) {
         if (mEventCount > 0 && mPaint != null && mTextPaint != null) {
             canvas.drawCircle(eventCircleX, eventCircleY, eventRadius, mPaint);
-            canvas.drawText(mTextPaint,String.valueOf(mEventCount),eventCircleX,mTextY);
+            canvas.drawText(mTextPaint, String.valueOf(mEventCount), eventCircleX, mTextY);
         }
     }
 }

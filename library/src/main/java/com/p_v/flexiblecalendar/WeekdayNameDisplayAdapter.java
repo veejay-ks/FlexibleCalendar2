@@ -12,6 +12,7 @@ import java.text.DateFormatSymbols;
 
 /**
  * WeekdayNameDisplayAdapter class.
+ * @author p-v
  */
 public class WeekdayNameDisplayAdapter extends BaseItemProvider {
 

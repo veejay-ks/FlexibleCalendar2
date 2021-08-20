@@ -8,6 +8,7 @@ import java.util.Locale;
 
 /**
  * FlexiCalendarHelper.
+ * @author p-v
  */
 public class FlexibleCalendarHelper {
 

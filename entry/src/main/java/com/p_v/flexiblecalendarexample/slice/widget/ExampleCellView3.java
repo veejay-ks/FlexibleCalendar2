@@ -1,7 +1,5 @@
 package com.p_v.flexiblecalendarexample.slice.widget;
 
-import com.p_v.flexiblecalendar.entity.Event;
-import com.p_v.flexiblecalendar.view.BaseCellView;
 import ohos.agp.colors.RgbColor;
 import ohos.agp.components.Component;
 import ohos.agp.components.element.Element;
@@ -9,61 +7,98 @@ import ohos.agp.components.element.ShapeElement;
 import ohos.app.Context;
 import ohos.agp.components.AttrSet;
 import ohos.agp.render.Canvas;
+import com.p_v.flexiblecalendar.entity.Event;
+import com.p_v.flexiblecalendar.view.BaseCellView;
 
 import java.util.List;
 
 /**
+ * ExampleCellView3.
+ *
  * @author p-v
  */
-public class ExampleCellView3 extends BaseCellView implements Component.EstimateSizeListener,Component.DrawTask {
+public class ExampleCellView3 extends BaseCellView implements Component.EstimateSizeListener, Component.DrawTask {
 
+    /**
+     * Boolean variable to judge the conditions.
+     */
     private boolean hasEvents;
 
-    public ExampleCellView3(Context context) {
+    /**
+     * ExampleCellView Constructor.
+     *
+     * @param context context
+     */
+    public ExampleCellView3(final Context context) {
         super(context);
         setListeners();
-        System.out.println("ExampleCellView3 constructor 1 ");
     }
 
-    public ExampleCellView3(Context context, AttrSet attrs) {
+    /**
+     * ExampleCellView constructor.
+     *
+     * @param context context
+     * @param attrs   attrs
+     */
+    public ExampleCellView3(final Context context, final AttrSet attrs) {
         super(context, attrs);
         setListeners();
-        System.out.println("ExampleCellView3 constructor 2 ");
     }
 
-    public ExampleCellView3(Context context, AttrSet attrs, int defStyleAttr) {
+    /**
+     * ExampleCellView Constructor.
+     *
+     * @param context      context
+     * @param attrs        attrs
+     * @param defStyleAttr defStyleAttr
+     */
+    public ExampleCellView3(final Context context, final AttrSet attrs, final String defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setListeners();
-        System.out.println("ExampleCellView3 constructor 3 ");
     }
 
+    /**
+     * To set the Listeners.
+     */
     private void setListeners() {
         addDrawTask(this);
         setEstimateSizeListener(this);
     }
 
+    /**
+     * set events.
+     *
+     * @param colorList colorlist
+     */
     @Override
-    public void setEvents(List<? extends Event> colorList) {
+    public void setEvents(final List<? extends Event> colorList) {
         this.hasEvents = colorList != null && !colorList.isEmpty();
-        System.out.println("VEEJAY EXCV3 SETEVENTS "+hasEvents);
         invalidate();
         postLayout();
     }
 
+    /**
+     * onestimate size.
+     *
+     * @param widthMeasureSpec width
+     * @param heightMeasureSpec height
+     */
     @Override
-    public boolean onEstimateSize(int i, int i1) {
-        super.onEstimateSize(i,i1);
+    public boolean onEstimateSize(final int widthMeasureSpec, final int heightMeasureSpec) {
+        super.onEstimateSize(widthMeasureSpec, heightMeasureSpec);
         return true;
     }
 
+    /**
+     * ondraw.
+     *
+     * @param component component
+     * @param canvas canvas
+     */
     @Override
-    public void onDraw(Component component, Canvas canvas) {
-
-        System.out.println("VEEJAY EXCV3 GETSTATE "+getStateSet()+" "+STATE_SELECTED+" "+SELECTED_TODAY+" "+STATE_REGULAR);
-        System.out.println("VEEJAY EXCV3 ONDRAW "+!getStateSet().contains(STATE_SELECTED)+" "+!getStateSet().contains(SELECTED_TODAY)+" "+getStateSet().contains(STATE_REGULAR)+" "+hasEvents);
-        System.out.println("VEJAY ondraw "+ getWidth());
-        if (!getStateSet().contains(STATE_SELECTED) && !getStateSet().contains(SELECTED_TODAY) &&
-                getStateSet().contains(STATE_REGULAR) && hasEvents) {
+    public void onDraw(final Component component, final Canvas canvas) {
+        if (!getStateSet().contains(STATE_SELECTED) && !getStateSet().contains(SELECTED_TODAY)
+                && getStateSet().contains(STATE_REGULAR) && hasEvents) {
             this.setBackground(getElementFromResourceIdBlue());
         }
         if (getStateSet().contains(STATE_SELECTED) && hasEvents) {
@@ -71,18 +106,27 @@ public class ExampleCellView3 extends BaseCellView implements Component.Estimate
         }
     }
 
+    /**
+     * To get the Element from ResourceIdBlue.
+     *
+     * @return Element
+     */
     public Element getElementFromResourceIdBlue() {
-        RgbColor rgbColor = new RgbColor(3,36  ,252);
+        RgbColor rgbColor = new RgbColor(3, 36, 252);
         ShapeElement shapeElement = new ShapeElement();
         shapeElement.setRgbColor(rgbColor);
         return shapeElement;
     }
 
+    /**
+     * To get the Element from ResourceIdRed.
+     *
+     * @return Element
+     */
     public Element getElementFromResourceIdRed() {
-        RgbColor rgbColor = new RgbColor(230,7  ,29);
+        RgbColor rgbColor = new RgbColor(230, 7, 29);
         ShapeElement shapeElement = new ShapeElement();
         shapeElement.setRgbColor(rgbColor);
         return shapeElement;
     }
-
 }
