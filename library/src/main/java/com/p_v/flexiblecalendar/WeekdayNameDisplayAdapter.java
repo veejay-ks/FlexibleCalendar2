@@ -85,13 +85,16 @@ public class WeekdayNameDisplayAdapter extends BaseItemProvider {
      * @return component
      */
     @Override
-    public Component getComponent(final int position, final Component component, final ComponentContainer componentContainer) {
+    public Component getComponent(final int position, final Component component,
+                                  final ComponentContainer componentContainer) {
         BaseCellView cellView = cellViewDrawer.getCellView(position, component, componentContainer);
         if (cellView == null) {
-            cellView = (BaseCellView) LayoutBoost.inflate(weekAdapterContext, ResourceTable.Layout_square_cell_layout, null, false);
+            cellView = (BaseCellView) LayoutBoost.inflate(weekAdapterContext, ResourceTable.Layout_square_cell_layout,
+                    null, false);
         }
         WeekDay weekDay = (WeekDay) getItem(position);
-        String weekdayName = cellViewDrawer.getWeekDayName(weekDay.index, weekDay.displayValue); //adding 1 as week days starts from 1 in Calendar
+        //adding 1 as week days starts from 1 in Calendar
+        String weekdayName = cellViewDrawer.getWeekDayName(weekDay.index, weekDay.displayValue);
         if ((weekdayName == null) || weekdayName.equals("")) {
             weekdayName = weekDay.displayValue;
         }

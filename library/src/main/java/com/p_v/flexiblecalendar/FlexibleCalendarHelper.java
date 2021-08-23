@@ -20,8 +20,7 @@ public class FlexibleCalendarHelper {
     /**
      * default constructor.
      */
-    private FlexibleCalendarHelper(){
-
+    private FlexibleCalendarHelper() {
     }
 
     /**
@@ -67,6 +66,8 @@ public class FlexibleCalendarHelper {
     /**
      * Get the array for week days for the current locale.
      *
+     * @param context context
+     *
      * @return Get the array for week days for the current locale
      */
     public static String[] getWeekDaysList(Context context) {
@@ -87,6 +88,8 @@ public class FlexibleCalendarHelper {
 
     /**
      * get localized calendar.
+     *
+     * @param context context
      *
      * @return the localized calendar instance
      */

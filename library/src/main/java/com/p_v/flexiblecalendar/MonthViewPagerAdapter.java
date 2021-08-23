@@ -1,6 +1,10 @@
 package com.p_v.flexiblecalendar;
 
-import ohos.agp.components.*;
+import ohos.agp.components.Component;
+import ohos.agp.components.ComponentContainer;
+import ohos.agp.components.PageSliderProvider;
+import ohos.agp.components.ListContainer;
+import ohos.agp.components.TableLayoutManager;
 import ohos.agp.database.DataSetSubscriber;
 import ohos.agp.render.layoutboost.LayoutBoost;
 import ohos.app.Context;
@@ -86,8 +90,8 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
      */
     public MonthViewPagerAdapter(Context context, int year, int month,
                                  FlexibleCalendarGridAdapter.OnDateCellItemClickListener onDateCellItemClickListener,
-                                 boolean showDatesOutsideMonth, boolean decorateDatesOutsideMonth, int startDayOfTheWeek,
-                                 boolean disableAutoDateSelection) {
+                                 boolean showDatesOutsideMonth, boolean decorateDatesOutsideMonth,
+                                 int startDayOfTheWeek, boolean disableAutoDateSelection) {
         this.context = context;
         this.dateAdapters = new ArrayList<>(VIEWS_IN_PAGER);
         this.onDateCellItemClickListener = onDateCellItemClickListener;
@@ -106,17 +110,18 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
      * @param month month
      */
     private void initializeDateAdapters(int year, int month) {
-        int pYear;
-        int pMonth;
+        int primaryYear;
+        int primaryMonth;
         if (month == 0) {
-            pYear = year - 1;
-            pMonth = 11;
+            primaryYear = year - 1;
+            primaryMonth = 11;
         } else {
-            pYear = year;
-            pMonth = month - 1;
+            primaryYear = year;
+            primaryMonth = month - 1;
         }
         for (int i = 0; i < VIEWS_IN_PAGER - 1; i++) {
-            dateAdapters.add(new FlexibleCalendarGridAdapter(context, year, month, showDatesOutsideMonth, decorateDatesOutsideMonth, startDayOfTheWeek, disableAutoDateSelection));
+            dateAdapters.add(new FlexibleCalendarGridAdapter(context, year, month, showDatesOutsideMonth,
+                    decorateDatesOutsideMonth, startDayOfTheWeek, disableAutoDateSelection));
             if (month == 11) {
                 year++;
                 month = 0;
@@ -124,7 +129,8 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
                 month++;
             }
         }
-        dateAdapters.add(new FlexibleCalendarGridAdapter(context, pYear, pMonth, showDatesOutsideMonth, decorateDatesOutsideMonth, startDayOfTheWeek, disableAutoDateSelection));
+        dateAdapters.add(new FlexibleCalendarGridAdapter(context, primaryYear, primaryMonth, showDatesOutsideMonth,
+                decorateDatesOutsideMonth, startDayOfTheWeek, disableAutoDateSelection));
     }
 
     /**
@@ -144,7 +150,7 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
     /**
      * page matcher.
      *
-     * @param component
+     * @param component component
      *
      * @param obj obj
      */
@@ -210,7 +216,7 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
     /**
      * set selected item.
      *
-     * @param selectedItem
+     * @param selectedItem selected item
      */
     public void setSelectedItem(SelectedDateItem selectedItem) {
         for (FlexibleCalendarGridAdapter f : dateAdapters) {

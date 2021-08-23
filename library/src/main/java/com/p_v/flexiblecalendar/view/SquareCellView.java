@@ -1,8 +1,8 @@
 package com.p_v.flexiblecalendar.view;
 
+import ohos.agp.components.AttrSet;
 import ohos.agp.components.Component;
 import ohos.app.Context;
-import ohos.agp.components.AttrSet;
 
 /**
  * Created by p-v on 15/07/15.
@@ -11,6 +11,7 @@ public class SquareCellView extends CircularEventCellView implements Component.E
 
     /**
      * arg constructor.
+     *
      * @param context context
      */
     public SquareCellView(final Context context) {
@@ -20,6 +21,7 @@ public class SquareCellView extends CircularEventCellView implements Component.E
 
     /**
      * arg constructor.
+     *
      * @param context context
      * @param attrs attrs
      */
@@ -30,6 +32,7 @@ public class SquareCellView extends CircularEventCellView implements Component.E
 
     /**
      * arg constructor.
+     *
      * @param context context
      * @param attrs attrs
      * @param defStyleAttr defstyleattrs
@@ -48,7 +51,7 @@ public class SquareCellView extends CircularEventCellView implements Component.E
 
 
     /**
-     * onestimatesize.
+     * on estimate size.
      *
      * @param widthMeasureSpec width
      * @param heightMeasureSpec height
