@@ -40,9 +40,19 @@ public class SelectedDateItem {
      *
      * @return selected date
      */
-    @Override
-    public SelectedDateItem clone() {
-        return new SelectedDateItem(year, month, day);
+    public SelectedDateItem(SelectedDateItem selectedDateItem) {
+        this.year = selectedDateItem.year;
+        this.month = selectedDateItem.month;
+        this.day = selectedDateItem.day;
+    }
+
+    /**
+     * copy factory.
+     *
+     * @return selected date
+     */
+    public static SelectedDateItem newInstance(SelectedDateItem slecSelectedDateItem) {
+        return new SelectedDateItem(slecSelectedDateItem);
     }
 
     /**

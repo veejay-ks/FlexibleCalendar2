@@ -482,7 +482,7 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
          */
         public void onClick(final Component arg1) {
             selectedItem = new SelectedDateItem(dateClassYear, dateClassMonth, dateClassDay);
-
+            SelectedDateItem.newInstance(selectedItem);
             if (disableAutoDateSelection) {
                 userSelectedDateItem = selectedItem;
             }
