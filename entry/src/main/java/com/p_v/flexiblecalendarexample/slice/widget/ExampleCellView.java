@@ -1,8 +1,8 @@
 package com.p_v.flexiblecalendarexample.slice.widget;
 
 import ohos.agp.components.Component;
-import ohos.app.Context;
 import ohos.agp.components.AttrSet;
+import ohos.app.Context;
 import com.p_v.flexiblecalendar.view.CircularEventCellView;
 
 /**

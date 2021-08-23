@@ -1,11 +1,11 @@
 package com.p_v.flexiblecalendarexample.slice;
 
-import com.p_v.flexiblecalendarexample.ResourceTable;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
+import com.p_v.flexiblecalendarexample.ResourceTable;
 
 /**
- * CalendarActivity.
+ * CalendarActivity class to display the Calendar Contents.
  */
 public class CalendarActivity extends AbilitySlice {
 

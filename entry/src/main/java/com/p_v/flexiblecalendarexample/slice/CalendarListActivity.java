@@ -39,13 +39,13 @@ public class CalendarListActivity extends AbilitySlice {
      * init view.
      */
     private void initView() {
-        ListContainer listContainer = (ListContainer) findComponentById(ResourceTable.Id_calendar_list_view);
         calendarList = new ArrayList<>();
         calendarList.add("Calendar 1");
         calendarList.add("Calendar 2");
         calendarList.add("Calendar 3");
         calendarList.add("Calendar 4");
         calendarList.add("Calendar 5");
+        ListContainer listContainer = (ListContainer) findComponentById(ResourceTable.Id_calendar_list_view);
         final CustomAdapter customAdapter = new CustomAdapter(this, calendarList);
         listContainer.setItemProvider(customAdapter);
     }

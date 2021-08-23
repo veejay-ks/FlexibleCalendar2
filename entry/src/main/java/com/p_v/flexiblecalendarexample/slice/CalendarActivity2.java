@@ -13,7 +13,6 @@ import ohos.global.resource.WrongTypeException;
 import com.p_v.flexiblecalendar.FlexibleCalendarView;
 import com.p_v.flexiblecalendar.view.BaseCellView;
 import com.p_v.flexiblecalendarexample.ResourceTable;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,18 +50,22 @@ public class CalendarActivity2 extends AbilitySlice {
         });
         calendarView.setCalendarView(new FlexibleCalendarView.CalendarView() {
             @Override
-            public BaseCellView getCellView(final int position, final Component convertView, final ComponentContainer parent, final int cellType) {
+            public BaseCellView getCellView(final int position, final Component convertView
+                                            , final ComponentContainer parent, final int cellType) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter scatter = LayoutScatter.getInstance(CalendarActivity2.this);
-                    cellView = (BaseCellView) scatter.parse(ResourceTable.Layout_calendar2_date_cell_view, parent, false);
+                    cellView = (BaseCellView) scatter.parse(ResourceTable.Layout_calendar2_date_cell_view, parent
+                                , false);
                 }
                 try {
                     if (cellType == BaseCellView.TODAY) {
-                        cellView.setTextColor(new Color(getResourceManager().getElement(ResourceTable.Color_holo_red_dark).getColor()));
+                        cellView.setTextColor(new Color(getResourceManager()
+                                .getElement(ResourceTable.Color_holo_red_dark).getColor()));
                         cellView.setTextSize(15);
                     } else {
-                        cellView.setTextColor(new Color(getResourceManager().getElement(ResourceTable.Color_color_white).getColor()));
+                        cellView.setTextColor(new Color(getResourceManager()
+                                .getElement(ResourceTable.Color_color_white).getColor()));
                         cellView.setTextSize(12);
                     }
                 } catch (IOException | NotExistException | WrongTypeException e) {
@@ -72,11 +75,13 @@ public class CalendarActivity2 extends AbilitySlice {
             }
 
             @Override
-            public BaseCellView getWeekdayCellView(final int position, final Component convertView, final ComponentContainer parent) {
+            public BaseCellView getWeekdayCellView(final int position, final Component convertView
+                                                   , final ComponentContainer parent) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter inflater = LayoutScatter.getInstance(CalendarActivity2.this);
-                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar2_week_cell_view, parent, false);
+                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar2_week_cell_view, parent
+                                , false);
                 }
                 return cellView;
             }

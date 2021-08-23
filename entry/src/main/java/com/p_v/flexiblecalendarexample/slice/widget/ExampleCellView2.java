@@ -88,12 +88,14 @@ public class ExampleCellView2 extends BaseCellView implements Component.DrawTask
      */
     private void init()  {
         try {
-            radius = (int) getResourceManager().getElement(ResourceTable.Float_example_cell_view_event_radius).getFloat();
+            radius = (int) getResourceManager().getElement(ResourceTable.Float_example_cell_view_event_radius)
+                                               .getFloat();
         } catch (IOException | NotExistException | WrongTypeException e) {
             e.printStackTrace();
         }
         try {
-            padding = (int) getResourceManager().getElement(ResourceTable.Float_example_cell_view_event_spacing).getFloat();
+            padding = (int) getResourceManager().getElement(ResourceTable.Float_example_cell_view_event_spacing)
+                                                .getFloat();
         } catch (IOException | NotExistException | WrongTypeException e) {
             e.printStackTrace();
         }
@@ -168,6 +170,7 @@ public class ExampleCellView2 extends BaseCellView implements Component.DrawTask
      * onestimate size.
      *
      * @param widthMeasureSpec width
+     *
      * @param heightMeasureSpec height
      */
     @Override
@@ -179,6 +182,7 @@ public class ExampleCellView2 extends BaseCellView implements Component.DrawTask
      * ondraw.
      *
      * @param component component
+     *
      * @param canvas canvas
      */
     @Override

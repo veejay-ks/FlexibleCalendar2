@@ -3,7 +3,7 @@ package com.p_v.flexiblecalendarexample;
 import ohos.aafwk.ability.AbilityPackage;
 
 /**
- * MyApplication.
+ * Default MyApplication class to launch the Application.
  */
 public class MyApplication extends AbilityPackage {
     /**

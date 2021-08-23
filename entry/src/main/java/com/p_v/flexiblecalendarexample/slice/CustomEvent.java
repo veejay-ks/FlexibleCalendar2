@@ -7,10 +7,12 @@ import com.p_v.flexiblecalendar.entity.Event;
  * @author p-v
  */
 public class CustomEvent implements Event {
+
     /**
      * color.
      */
     private int color;
+
     /**
      * argument constructor.
      * @param color color

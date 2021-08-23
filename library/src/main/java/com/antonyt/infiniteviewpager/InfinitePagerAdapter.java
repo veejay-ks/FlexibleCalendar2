@@ -44,10 +44,6 @@ public class InfinitePagerAdapter extends PageSliderProvider {
      * fake count.
      */
     private int fakeCount;
-    /**
-     * LABEL.
-     */
-    private Context context;
 
     /**
      * To specify the adapter and context.
@@ -59,7 +55,6 @@ public class InfinitePagerAdapter extends PageSliderProvider {
     public InfinitePagerAdapter(final PageSliderProvider adapter, final Context context) {
         this.adapter = adapter;
         this.fakeCount = -1;
-        this.context = context;
     }
 
     /**

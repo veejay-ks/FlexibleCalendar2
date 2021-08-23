@@ -1,15 +1,14 @@
 package com.p_v.flexiblecalendarexample.slice.widget;
 
 import ohos.agp.colors.RgbColor;
+import ohos.agp.components.AttrSet;
 import ohos.agp.components.Component;
 import ohos.agp.components.element.Element;
 import ohos.agp.components.element.ShapeElement;
 import ohos.app.Context;
-import ohos.agp.components.AttrSet;
 import ohos.agp.render.Canvas;
 import com.p_v.flexiblecalendar.entity.Event;
 import com.p_v.flexiblecalendar.view.BaseCellView;
-
 import java.util.List;
 
 /**
@@ -38,6 +37,7 @@ public class ExampleCellView3 extends BaseCellView implements Component.Estimate
      * ExampleCellView constructor.
      *
      * @param context context
+     *
      * @param attrs   attrs
      */
     public ExampleCellView3(final Context context, final AttrSet attrs) {
@@ -49,7 +49,9 @@ public class ExampleCellView3 extends BaseCellView implements Component.Estimate
      * ExampleCellView Constructor.
      *
      * @param context      context
+     *
      * @param attrs        attrs
+     *
      * @param defStyleAttr defStyleAttr
      */
     public ExampleCellView3(final Context context, final AttrSet attrs, final String defStyleAttr) {
@@ -81,6 +83,7 @@ public class ExampleCellView3 extends BaseCellView implements Component.Estimate
      * onestimate size.
      *
      * @param widthMeasureSpec width
+     *
      * @param heightMeasureSpec height
      */
     @Override
@@ -93,6 +96,7 @@ public class ExampleCellView3 extends BaseCellView implements Component.Estimate
      * ondraw.
      *
      * @param component component
+     *
      * @param canvas canvas
      */
     @Override

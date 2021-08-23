@@ -1,8 +1,5 @@
 package com.p_v.flexiblecalendarexample.slice;
 
-import com.p_v.flexiblecalendar.FlexibleCalendarView;
-import com.p_v.flexiblecalendar.view.BaseCellView;
-import com.p_v.flexiblecalendarexample.ResourceTable;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
 import ohos.agp.components.Component;
@@ -10,7 +7,9 @@ import ohos.agp.components.ComponentContainer;
 import ohos.agp.components.DatePicker;
 import ohos.agp.components.LayoutScatter;
 import ohos.agp.window.dialog.ToastDialog;
-
+import com.p_v.flexiblecalendar.FlexibleCalendarView;
+import com.p_v.flexiblecalendar.view.BaseCellView;
+import com.p_v.flexiblecalendarexample.ResourceTable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,21 +79,25 @@ public class CalendarActivity3 extends AbilitySlice {
 
         calendarView.setCalendarView(new FlexibleCalendarView.CalendarView() {
             @Override
-            public BaseCellView getCellView(final int position, final Component convertView, final ComponentContainer parent, final int cellType) {
+            public BaseCellView getCellView(final int position, final Component convertView
+                                            , final ComponentContainer parent, final int cellType) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter inflater = LayoutScatter.getInstance(CalendarActivity3.this);
-                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_date_cell_view, parent, false);
+                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_date_cell_view, parent
+                                , false);
                 }
                 return cellView;
             }
 
             @Override
-            public BaseCellView getWeekdayCellView(final int position, final Component convertView, final ComponentContainer parent) {
+            public BaseCellView getWeekdayCellView(final int position, final Component convertView
+                                                   , final ComponentContainer parent) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter inflater = LayoutScatter.getInstance(CalendarActivity3.this);
-                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_week_cell_view, parent, false);
+                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_week_cell_view, parent
+                                , false);
                 }
                 return cellView;
             }

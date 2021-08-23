@@ -3,20 +3,19 @@ package com.p_v.flexiblecalendarexample.slice;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
 import ohos.agp.colors.RgbColor;
+import ohos.agp.components.Button;
 import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
+import ohos.agp.components.element.ShapeElement;
 import ohos.agp.components.Image;
 import ohos.agp.components.LayoutScatter;
 import ohos.agp.components.Text;
-import ohos.agp.components.Button;
-import ohos.agp.components.element.ShapeElement;
 import ohos.agp.utils.Color;
 import ohos.global.resource.NotExistException;
 import ohos.global.resource.WrongTypeException;
 import com.p_v.flexiblecalendar.FlexibleCalendarView;
 import com.p_v.flexiblecalendar.view.BaseCellView;
 import com.p_v.flexiblecalendarexample.ResourceTable;
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
@@ -42,23 +41,19 @@ public class CalendarActivity4 extends AbilitySlice {
      * initView.
      */
     private void initView() {
-        final FlexibleCalendarView calendarView = (FlexibleCalendarView) findComponentById(ResourceTable.Id_calendar_view);
+        final FlexibleCalendarView calendarView = (FlexibleCalendarView) findComponentById
+                                                  (ResourceTable.Id_calendar_view);
         calendarView.setStartDayOfTheWeek(Calendar.MONDAY);
-
         Image leftArrow = (Image) findComponentById(ResourceTable.Id_left_arrow);
         Image rightArrow = (Image) findComponentById(ResourceTable.Id_right_arrow);
-
         Text monthTextView = (Text) findComponentById(ResourceTable.Id_month_text_view);
-
         Calendar cal = Calendar.getInstance();
         cal.set(calendarView.getSelectedDateItem().getYear(), calendarView.getSelectedDateItem().getMonth(), 1);
         monthTextView.setText(cal.getDisplayName(Calendar.MONTH,
                 Calendar.LONG, Locale.ENGLISH) + " " + calendarView.getSelectedDateItem().getYear());
-
         leftArrow.setClickedListener(component -> {
             calendarView.moveToPreviousMonth();
         });
-
         rightArrow.setClickedListener(component -> {
             calendarView.moveToNextMonth();
         });
@@ -69,30 +64,35 @@ public class CalendarActivity4 extends AbilitySlice {
                     Calendar.LONG, Locale.ENGLISH) + " " + year);
         });
         calendarView.setShowDatesOutsideMonth(true);
-
         calendarView.setCalendarView(new FlexibleCalendarView.CalendarView() {
             @Override
-            public BaseCellView getCellView(final int position, final Component convertView, final ComponentContainer parent, final int cellType) {
+            public BaseCellView getCellView(final int position, final Component convertView
+                                            , final ComponentContainer parent, final int cellType) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter inflater = LayoutScatter.getInstance(CalendarActivity4.this);
-                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_date_cell_view, parent, false);
+                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_date_cell_view, parent
+                                , false);
                 }
                 return cellView;
             }
 
             @Override
-            public BaseCellView getWeekdayCellView(final int position, final Component convertView, final ComponentContainer parent) {
+            public BaseCellView getWeekdayCellView(final int position, final Component convertView
+                                                   , final ComponentContainer parent) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter inflater = LayoutScatter.getInstance(CalendarActivity4.this);
-                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_week_cell_view, parent, false);
+                    cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_week_cell_view, parent
+                                , false);
                     try {
                         ShapeElement shapeElement = new ShapeElement();
-                        RgbColor rgbColor = new RgbColor(getResourceManager().getElement(ResourceTable.Color_holo_purple).getColor());
+                        RgbColor rgbColor = new RgbColor(getResourceManager()
+                                            .getElement(ResourceTable.Color_holo_purple).getColor());
                         shapeElement.setRgbColor(rgbColor);
                         cellView.setBackground(shapeElement);
-                        cellView.setTextColor(new Color(getResourceManager().getElement(ResourceTable.Color_holo_orange_light).getColor()));
+                        cellView.setTextColor(new Color(getResourceManager()
+                                            .getElement(ResourceTable.Color_holo_orange_light).getColor()));
                     } catch (IOException | NotExistException | WrongTypeException e) {
                         e.printStackTrace();
                     }
@@ -106,13 +106,10 @@ public class CalendarActivity4 extends AbilitySlice {
                 return null;
             }
         });
-
         Button resetButton = (Button) findComponentById(ResourceTable.Id_reset_button);
         resetButton.setClickedListener(component -> {
             calendarView.goToCurrentMonth();
 
         });
     }
-
 }
-

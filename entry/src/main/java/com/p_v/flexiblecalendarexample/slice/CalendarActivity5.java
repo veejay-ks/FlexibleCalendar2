@@ -1,20 +1,19 @@
 package com.p_v.flexiblecalendarexample.slice;
 
-import com.p_v.flexiblecalendarexample.ResourceTable;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
 import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
 import ohos.agp.render.layoutboost.LayoutBoost;
 import com.p_v.flexiblecalendar.FlexibleCalendarView;
+import com.p_v.flexiblecalendarexample.ResourceTable;
 import com.p_v.flexiblecalendar.entity.Event;
 import com.p_v.flexiblecalendar.view.BaseCellView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CalendarActivity.
+ * CalendarActivity5 class.
  */
 public class CalendarActivity5 extends AbilitySlice {
     /**
@@ -74,12 +73,6 @@ public class CalendarActivity5 extends AbilitySlice {
      * Event.
      */
     public static class EventW implements Event {
-        /**
-         * Constructor.
-         */
-        public EventW() {
-        }
-
         /**
          * get color.
          *
