@@ -4,6 +4,7 @@ import com.p_v.flexiblecalendar.entity.Event;
 
 /**
  * CustomEvent.
+ *
  * @author p-v
  */
 public class CustomEvent implements Event {
@@ -15,6 +16,7 @@ public class CustomEvent implements Event {
 
     /**
      * argument constructor.
+     *
      * @param color color
      */
     public CustomEvent(final int color) {
@@ -23,6 +25,7 @@ public class CustomEvent implements Event {
 
     /**
      * get color.
+     *
      * @return color
      */
     @Override

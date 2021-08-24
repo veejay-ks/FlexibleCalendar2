@@ -6,7 +6,7 @@ import com.p_v.flexiblecalendar.FlexibleCalendarView;
  * ICellViewDrawer.
  * @author p-v
  **/
-public interface ICellViewDrawer {
+public interface ImplCellViewDrawer {
     /**
      * Set the calendar view
      *

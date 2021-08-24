@@ -79,20 +79,20 @@ public class InfinitePagerAdapter extends PageSliderProvider {
     /**
      * destroy container.
      *
-     * @param componentContainer container
+     * @param compCont container
      *
-     * @param position position
+     * @param pos pos
      *
-     * @param object object
+     * @param obj obj
      */
     @Override
-    public void destroyPageFromContainer(final ComponentContainer componentContainer, final int position, final Object object) {
-        int virtualPosition = position % getRealCount();
-        debug("destroyItem: real position: " + position);
-        debug("destroyItem: virtual position: " + virtualPosition);
+    public void destroyPageFromContainer(final ComponentContainer compCont, final int pos, final Object obj) {
+        int virtualPosition = pos % getRealCount();
+        debug("destroyItem: real pos: " + pos);
+        debug("destroyItem: virtual pos: " + virtualPosition);
 
-        // only expose virtual position to the inner adapter
-        adapter.destroyPageFromContainer(componentContainer, virtualPosition, object);
+        // only expose virtual pos to the inner adapter
+        adapter.destroyPageFromContainer(compCont, virtualPosition, obj);
     }
 
     /**

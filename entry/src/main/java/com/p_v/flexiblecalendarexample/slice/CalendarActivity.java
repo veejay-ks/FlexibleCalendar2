@@ -11,6 +11,7 @@ public class CalendarActivity extends AbilitySlice {
 
     /**
      * onStart.
+     *
      * @param intent intent
      */
     @Override

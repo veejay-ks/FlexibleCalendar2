@@ -27,6 +27,7 @@ public class CalendarActivity2 extends AbilitySlice {
      * calendarview.
      */
     FlexibleCalendarView calendarView;
+
     /**
      * onStart.
      *

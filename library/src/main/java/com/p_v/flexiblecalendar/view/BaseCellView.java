@@ -73,8 +73,7 @@ public abstract class BaseCellView extends Text implements Component.EstimateSiz
      * arg constructor.
      *
      * @param context context
-     *
-     * @param attrs attrs
+     * @param attrs   attrs
      */
     protected BaseCellView(final Context context, final AttrSet attrs) {
         super(context, attrs);
@@ -84,8 +83,8 @@ public abstract class BaseCellView extends Text implements Component.EstimateSiz
     /**
      * arg constructor.
      *
-     * @param context context
-     * @param attrs attrs
+     * @param context      context
+     * @param attrs        attrs
      * @param defStyleAttr defstyleattrs
      */
     protected BaseCellView(final Context context, final AttrSet attrs, final String defStyleAttr) {
@@ -125,7 +124,10 @@ public abstract class BaseCellView extends Text implements Component.EstimateSiz
         return stateSet;
     }
 
-//    @IntDef({TODAY, SELECTED, REGULAR, SELECTED_TODAY, OUTSIDE_MONTH})
+    /**
+     * interface CellType.
+     */
+    //    @IntDef({TODAY, SELECTED, REGULAR, SELECTED_TODAY, OUTSIDE_MONTH})
     @Retention(RetentionPolicy.SOURCE)
     public @interface CellType {
     }
@@ -133,7 +135,7 @@ public abstract class BaseCellView extends Text implements Component.EstimateSiz
     /**
      * onestimatesize.
      *
-     * @param i i
+     * @param i  i
      * @param i1 i1
      */
     @Override

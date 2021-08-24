@@ -38,9 +38,9 @@ public class SelectedDateItem {
     /**
      * clone.
      *
-     * @return selected date
+     * @param selectedDateItem date
      */
-    public SelectedDateItem(SelectedDateItem selectedDateItem) {
+    public SelectedDateItem(final SelectedDateItem selectedDateItem) {
         this.year = selectedDateItem.year;
         this.month = selectedDateItem.month;
         this.day = selectedDateItem.day;
@@ -49,9 +49,11 @@ public class SelectedDateItem {
     /**
      * copy factory.
      *
+     * @param slecSelectedDateItem selected date item
+     *
      * @return selected date
      */
-    public static SelectedDateItem newInstance(SelectedDateItem slecSelectedDateItem) {
+    public static SelectedDateItem newInstance(final SelectedDateItem slecSelectedDateItem) {
         return new SelectedDateItem(slecSelectedDateItem);
     }
 
@@ -84,6 +86,7 @@ public class SelectedDateItem {
 
     /**
      * set month.
+     *
      * @param month month
      */
     public void setMonth(final int month) {

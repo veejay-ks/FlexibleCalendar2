@@ -102,40 +102,6 @@ public class ExampleCellView2 extends BaseCellView implements Component.DrawTask
     }
 
     /**
-     * To estimate the size.
-     *
-     * @param w w
-     *
-     * @param h h
-     *
-     * @param oldw oldw
-     *
-     * @param oldh oldh
-     *
-     */
-    protected void onEstimateSize(final int w, final int h, final int oldw, final int oldh) {
-
-        if (paintList != null) {
-            int num = paintList.size();
-
-            Paint p = new Paint();
-            p.setTextSize(getTextSize());
-
-            Rect rect = new Rect();
-            eventCircleY = (3 * getHeight() + rect.getHeight()) / 4;
-
-            //calculate left most position for the circle
-            if (leftMostPosition == Integer.MIN_VALUE) {
-                leftMostPosition = (getWidth() / 2) - (num / 2) * 2 * (padding + radius);
-                if (num % 2 == 0) {
-                    leftMostPosition = leftMostPosition + radius + padding;
-                }
-            }
-
-        }
-    }
-
-    /**
      * To calculate the Start point.
      *
      * @param offset offset
@@ -191,6 +157,39 @@ public class ExampleCellView2 extends BaseCellView implements Component.DrawTask
             int num = paintList.size();
             for (int i = 0; i < num; i++) {
                 canvas.drawCircle(calculateStartPoint(i), eventCircleY, radius, paintList.get(i));
+            }
+        }
+    }
+
+    /**
+     * To estimate the size.
+     *
+     * @param w w
+     *
+     * @param h h
+     *
+     * @param oldw oldw
+     *
+     * @param oldh oldh
+     *
+     */
+    protected void onEstimateSize(final int w, final int h, final int oldw, final int oldh) {
+
+        if (paintList != null) {
+            int num = paintList.size();
+
+            Paint p = new Paint();
+            p.setTextSize(getTextSize());
+
+            Rect rect = new Rect();
+            eventCircleY = (3 * getHeight() + rect.getHeight()) / 4;
+
+            //calculate left most position for the circle
+            if (leftMostPosition == Integer.MIN_VALUE) {
+                leftMostPosition = (getWidth() / 2) - (num / 2) * 2 * (padding + radius);
+                if (num % 2 == 0) {
+                    leftMostPosition = leftMostPosition + radius + padding;
+                }
             }
         }
     }

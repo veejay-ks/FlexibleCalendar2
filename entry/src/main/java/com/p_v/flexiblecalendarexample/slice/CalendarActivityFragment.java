@@ -52,11 +52,11 @@ public class CalendarActivityFragment extends Fraction implements FlexibleCalend
     /**
      * arg constructor.
      *
-     * @param mContext context
+     * @param context context
      */
-    public CalendarActivityFragment(final Context mContext) {
-        calendarView.setOnMonthChangeListener((FlexibleCalendarView.OnMonthChangeListener) mContext);
-        calendarView.setOnDateClickListener((FlexibleCalendarView.OnDateClickListener) mContext);
+    public CalendarActivityFragment(final Context context) {
+        calendarView.setOnMonthChangeListener((FlexibleCalendarView.OnMonthChangeListener) context);
+        calendarView.setOnDateClickListener((FlexibleCalendarView.OnDateClickListener) context);
     }
 
     /**
@@ -150,13 +150,12 @@ public class CalendarActivityFragment extends Fraction implements FlexibleCalend
         calendarView.setOnMonthChangeListener((FlexibleCalendarView.OnMonthChangeListener) context);
         calendarView.setOnDateClickListener((FlexibleCalendarView.OnDateClickListener) context);
         fillEvents();
-        Button nextDateBtn = (Button) component.findComponentById(ResourceTable.Id_move_to_next_date);
-        Button prevDateBtn = (Button) component.findComponentById(ResourceTable.Id_move_to_previous_date);
-        Button nextMonthBtn = (Button) component.findComponentById(ResourceTable.Id_move_to_next_month);
-        Button prevMonthBtn = (Button) component.findComponentById(ResourceTable.Id_move_to_previous_month);
-        Button goToCurrentDayBtn = (Button) component.findComponentById(ResourceTable.Id_go_to_current_day);
-        Button showDatesOutSideMonthBtn = (Button) component
-                                                     .findComponentById(ResourceTable.Id_show_dates_outside_month);
+        final Button nextDateBtn = (Button) component.findComponentById(ResourceTable.Id_move_to_next_date);
+        final Button prevDateBtn = (Button) component.findComponentById(ResourceTable.Id_move_to_previous_date);
+        final Button nextMonthBtn = (Button) component.findComponentById(ResourceTable.Id_move_to_next_month);
+        final Button prevMonthBtn = (Button) component.findComponentById(ResourceTable.Id_move_to_previous_month);
+        final Button goToCurrentDayBtn = (Button) component.findComponentById(ResourceTable.Id_go_to_current_day);
+        final Button shwDtsOut = (Button) component.findComponentById(ResourceTable.Id_show_dates_outside_month);
         nextDateBtn.setClickedListener((Component view) -> {
             calendarView.moveToNextDate();
         });
@@ -172,7 +171,7 @@ public class CalendarActivityFragment extends Fraction implements FlexibleCalend
         goToCurrentDayBtn.setClickedListener((Component view) -> {
             calendarView.goToCurrentDay();
         });
-        showDatesOutSideMonthBtn.setClickedListener((Component view) -> {
+        shwDtsOut.setClickedListener((Component view) -> {
 
             if (calendarView.getShowDatesOutsideMonth()) {
                 calendarView.setShowDatesOutsideMonth(false);
@@ -190,43 +189,59 @@ public class CalendarActivityFragment extends Fraction implements FlexibleCalend
     private void fillEvents() {
         calendarView.setEventDataProvider((int year, int month, int day) -> {
             List<CalendarEvent> eventColors = null;
-
-            if (year == calendar.get(Calendar.YEAR) && month == calendar.get(Calendar.MONTH) && day == calendar
-                                                                        .get(Calendar.DAY_OF_MONTH)) {
-                eventColors = new ArrayList<>(2);
-                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
-                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
-                return eventColors;
-            }
-
-            if (year == 2016 && month == 10 && day == 12) {
-                eventColors = new ArrayList<>(2);
-                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
-                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
-                return eventColors;
-            }
-
-            if (year == 2016 && month == 10 && day == 7
-                    || year == 2016 && month == 10 && day == 29
-                    || year == 2016 && month == 10 && day == 5
-                    || year == 2016 && month == 10 && day == 9) {
-                eventColors = new ArrayList<>(1);
-                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
-                return eventColors;
-            }
-
-            if (year == 2016 && month == 10 && day == 31
-                    || year == 2016 && month == 10 && day == 22
-                    || year == 2016 && month == 10 && day == 18
-                    || year == 2016 && month == 10 && day == 11) {
-                eventColors = new ArrayList<>(3);
-                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_red_dark));
-                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_orange_light));
-                eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
-                return eventColors;
-            }
+            calcOne(year, month, day, eventColors);
+            calcTwo(year, month, day, eventColors);
+            calcThree(year, month, day, eventColors);
+            calcFour(year, month, day, eventColors);
             return eventColors;
         });
+    }
+
+    private List<CalendarEvent> calcFour(int year, int month, int day, List<CalendarEvent> eventColors) {
+        if (year == 2016 && month == 10 && day == 31
+                || year == 2016 && month == 10 && day == 22
+                || year == 2016 && month == 10 && day == 18
+                || year == 2016 && month == 10 && day == 11) {
+            eventColors = new ArrayList<>(3);
+            eventColors.add(new CalendarEvent(ResourceTable.Color_holo_red_dark));
+            eventColors.add(new CalendarEvent(ResourceTable.Color_holo_orange_light));
+            eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
+            return eventColors;
+        }
+        return eventColors;
+    }
+
+    private List<CalendarEvent> calcThree(int year, int month, int day, List<CalendarEvent> eventColors) {
+        if (year == 2016 && month == 10 && day == 7
+                || year == 2016 && month == 10 && day == 29
+                || year == 2016 && month == 10 && day == 5
+                || year == 2016 && month == 10 && day == 9) {
+            eventColors = new ArrayList<>(1);
+            eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
+            return eventColors;
+        }
+        return eventColors;
+    }
+
+    private List<CalendarEvent> calcTwo(int year, int month, int day, List<CalendarEvent> eventColors) {
+        if (year == 2016 && month == 10 && day == 12) {
+            eventColors = new ArrayList<>(2);
+            eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
+            eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
+            return eventColors;
+        }
+        return eventColors;
+    }
+
+    private List<CalendarEvent> calcOne(int year, int month, int day, List<CalendarEvent> eventColors) {
+        if (year == calendar.get(Calendar.YEAR) && month == calendar.get(Calendar.MONTH) && day == calendar
+                .get(Calendar.DAY_OF_MONTH)) {
+            eventColors = new ArrayList<>(2);
+            eventColors.add(new CalendarEvent(ResourceTable.Color_holo_blue_light));
+            eventColors.add(new CalendarEvent(ResourceTable.Color_holo_purple));
+            return eventColors;
+        }
+        return eventColors;
     }
 
     /**

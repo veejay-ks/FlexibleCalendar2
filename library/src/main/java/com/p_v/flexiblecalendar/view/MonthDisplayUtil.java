@@ -6,6 +6,7 @@ import java.util.Calendar;
  * Month display util.
  */
 public class MonthDisplayUtil {
+
     /**
      * week start day.
      */
@@ -29,7 +30,8 @@ public class MonthDisplayUtil {
 
     /**
      * arg constructor.
-     * @param year The year.
+     *
+     * @param year  The year.
      * @param month The month.
      */
     public MonthDisplayUtil(final int year, final int month) {
@@ -38,8 +40,9 @@ public class MonthDisplayUtil {
 
     /**
      * arg constructor.
-     * @param year The year.
-     * @param month The month.
+     *
+     * @param year         The year.
+     * @param month        The month.
      * @param weekStartDay What day of the week the week should start.
      */
     public MonthDisplayUtil(final int year, final int month, final int weekStartDay) {
@@ -57,12 +60,12 @@ public class MonthDisplayUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.getTimeInMillis();
-
         recalculate();
     }
 
     /**
      * get year.
+     *
      * @return year
      */
     public int getYear() {
@@ -71,6 +74,7 @@ public class MonthDisplayUtil {
 
     /**
      * get month.
+     *
      * @return month
      */
     public int getMonth() {
@@ -79,6 +83,7 @@ public class MonthDisplayUtil {
 
     /**
      * get week start day.
+     *
      * @return week start day
      */
     public int getWeekStartDay() {
@@ -87,8 +92,9 @@ public class MonthDisplayUtil {
 
     /**
      * get first day of the month.
+     *
      * @return The first day of the month using a constants such as
-     *   {@link Calendar#SUNDAY}.
+     * {@link Calendar#SUNDAY}.
      */
     public int getFirstDayOfMonth() {
         return calendar.get(Calendar.DAY_OF_WEEK);
@@ -96,18 +102,19 @@ public class MonthDisplayUtil {
 
     /**
      * get number days in the month.
+     *
      * @return The number of days in the month.
      */
     public int getNumberOfDaysInMonth() {
         return numDaysInMonth;
     }
 
-
     /**
      * get offset.
+     *
      * @return The offset from displaying everything starting on the very first
-     *     box.  For example, if the calendar is set to display the first day of
-     *     the week as Sunday, and the month starts on a Wednesday, the offset is 3.
+     * box.  For example, if the calendar is set to display the first day of
+     * the week as Sunday, and the month starts on a Wednesday, the offset is 3.
      */
     public int getOffset() {
         return offset;
@@ -115,9 +122,10 @@ public class MonthDisplayUtil {
 
     /**
      * get digits.
+     *
      * @param row Which row (0-5).
      * @return the digits of the month to display in one
-     *     of the 6 rows of a calendar month display.
+     * of the 6 rows of a calendar month display.
      */
     public int[] getDigitsForRow(final int row) {
         if (row < 0 || row > 5) {
@@ -135,7 +143,8 @@ public class MonthDisplayUtil {
 
     /**
      * getDayAt at specified row & col.
-     * @param row The row, 0-5, starting from the top.
+     *
+     * @param row    The row, 0-5, starting from the top.
      * @param column The column, 0-6, starting from the left.
      * @return The day at a particular row, column
      */
@@ -150,10 +159,10 @@ public class MonthDisplayUtil {
 
     /**
      * is within current month.
-     * @param row row
+     *
+     * @param row    row
      * @param column col
      * @return Whether the row and column fall within the month.
-     *
      */
     public boolean isWithinCurrentMonth(final int row, final int column) {
 

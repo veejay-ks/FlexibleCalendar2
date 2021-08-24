@@ -7,7 +7,7 @@ import ohos.agp.components.ComponentContainer;
  * IDateCellViewDrawer.
  * @author p-v
  */
-public interface IDateCellViewDrawer extends ICellViewDrawer {
+public interface ImplDateCellViewDrawer extends ImplCellViewDrawer {
     /**
      * Date Cell view.
      *

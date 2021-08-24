@@ -5,10 +5,10 @@ import ohos.aafwk.content.Intent;
 import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
 import ohos.agp.render.layoutboost.LayoutBoost;
-import com.p_v.flexiblecalendar.FlexibleCalendarView;
-import com.p_v.flexiblecalendarexample.ResourceTable;
 import com.p_v.flexiblecalendar.entity.Event;
 import com.p_v.flexiblecalendar.view.BaseCellView;
+import com.p_v.flexiblecalendar.FlexibleCalendarView;
+import com.p_v.flexiblecalendarexample.ResourceTable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,20 +36,23 @@ public class CalendarActivity5 extends AbilitySlice {
         view.setCalendarView(new FlexibleCalendarView.CalendarView() {
 
             @Override
-            public BaseCellView getCellView(final int position, final Component convertView, final ComponentContainer parent, final int cellType) {
+            public BaseCellView getCellView(final int position, final Component convertView,
+                                            final ComponentContainer parent, final int cellType) {
                 BaseCellView cellView = null;
 
                 if (convertView != null) {
                     cellView = (BaseCellView) convertView;
                 }
                 if (cellView == null) {
-                    cellView = (BaseCellView) LayoutBoost.inflate(CalendarActivity5.this, ResourceTable.Layout_calendar5_date_cell_view, null, false);
+                    cellView = (BaseCellView) LayoutBoost.inflate(CalendarActivity5.this, ResourceTable.Layout_calendar5_date_cell_view,
+                            null, false);
                 }
                 return cellView;
             }
 
             @Override
-            public BaseCellView getWeekdayCellView(final int position, final Component convertView, final ComponentContainer parent) {
+            public BaseCellView getWeekdayCellView(final int position, final Component convertView,
+                                                   final ComponentContainer parent) {
                 return null;
             }
 

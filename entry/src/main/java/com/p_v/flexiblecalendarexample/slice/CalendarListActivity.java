@@ -10,7 +10,6 @@ import ohos.agp.components.Text;
 import ohos.agp.render.layoutboost.LayoutBoost;
 import ohos.app.Context;
 import com.p_v.flexiblecalendarexample.ResourceTable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +66,7 @@ public class CalendarListActivity extends AbilitySlice {
          * arg constructor.
          *
          * @param context context
+         *
          * @param data    data
          */
         public CustomAdapter(final Context context, final List<String> data) {
@@ -114,8 +114,10 @@ public class CalendarListActivity extends AbilitySlice {
          * @return component
          */
         @Override
-        public Component getComponent(final int pos, final Component component, final ComponentContainer componentContainer) {
-            final Component calList = LayoutBoost.inflate(this.adapterContext, ResourceTable.Layout_mylist, componentContainer, false);
+        public Component getComponent(final int pos, final Component component
+                                      , final ComponentContainer componentContainer) {
+            final Component calList = LayoutBoost.inflate(this.adapterContext, ResourceTable
+                                                 .Layout_mylist, componentContainer, false);
             final Text text = (Text) calList.findComponentById(ResourceTable.Id_text_view);
             text.setText(calendarListAdapter.get(pos));
             text.setId(pos);
@@ -125,6 +127,7 @@ public class CalendarListActivity extends AbilitySlice {
             });
             return calList;
         }
+
         /**
          * check navigation to calendar.
          *

@@ -2,7 +2,7 @@ package com.p_v.flexiblecalendar.view.impl;
 
 import com.p_v.flexiblecalendar.FlexibleCalendarView;
 import com.p_v.flexiblecalendar.view.BaseCellView;
-import com.p_v.flexiblecalendar.view.IWeekCellViewDrawer;
+import com.p_v.flexiblecalendar.view.ImplWeekCellViewDrawer;
 import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
 
@@ -11,7 +11,7 @@ import ohos.agp.components.ComponentContainer;
  *
  * @author p-v
  */
-public class WeekdayCellViewImpl implements IWeekCellViewDrawer {
+public class WeekdayCellViewImpl implements ImplWeekCellViewDrawer {
 
     /**
      * calendarview.

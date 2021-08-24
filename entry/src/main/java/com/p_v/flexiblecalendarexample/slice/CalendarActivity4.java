@@ -6,10 +6,10 @@ import ohos.agp.colors.RgbColor;
 import ohos.agp.components.Button;
 import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
-import ohos.agp.components.element.ShapeElement;
 import ohos.agp.components.Image;
 import ohos.agp.components.LayoutScatter;
 import ohos.agp.components.Text;
+import ohos.agp.components.element.ShapeElement;
 import ohos.agp.utils.Color;
 import ohos.global.resource.NotExistException;
 import ohos.global.resource.WrongTypeException;
@@ -41,11 +41,10 @@ public class CalendarActivity4 extends AbilitySlice {
      * initView.
      */
     private void initView() {
-        final FlexibleCalendarView calendarView = (FlexibleCalendarView) findComponentById
-                                                  (ResourceTable.Id_calendar_view);
+        final FlexibleCalendarView calendarView = (FlexibleCalendarView) findComponentById(
+                                                   ResourceTable.Id_calendar_view);
         calendarView.setStartDayOfTheWeek(Calendar.MONDAY);
         Image leftArrow = (Image) findComponentById(ResourceTable.Id_left_arrow);
-        Image rightArrow = (Image) findComponentById(ResourceTable.Id_right_arrow);
         Text monthTextView = (Text) findComponentById(ResourceTable.Id_month_text_view);
         Calendar cal = Calendar.getInstance();
         cal.set(calendarView.getSelectedDateItem().getYear(), calendarView.getSelectedDateItem().getMonth(), 1);
@@ -54,6 +53,7 @@ public class CalendarActivity4 extends AbilitySlice {
         leftArrow.setClickedListener(component -> {
             calendarView.moveToPreviousMonth();
         });
+        Image rightArrow = (Image) findComponentById(ResourceTable.Id_right_arrow);
         rightArrow.setClickedListener(component -> {
             calendarView.moveToNextMonth();
         });

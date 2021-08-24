@@ -10,6 +10,7 @@ import com.p_v.flexiblecalendarexample.slice.CalendarListActivity;
 public class MainAbility extends Ability {
     /**
      * onStart.
+     *
      * @param intent intent
      */
     @Override

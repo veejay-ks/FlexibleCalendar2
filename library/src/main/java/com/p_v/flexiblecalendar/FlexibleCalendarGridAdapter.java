@@ -9,7 +9,7 @@ import ohos.agp.components.Component;
 import com.p_v.flexiblecalendar.entity.Event;
 import com.p_v.flexiblecalendar.entity.SelectedDateItem;
 import com.p_v.flexiblecalendar.view.BaseCellView;
-import com.p_v.flexiblecalendar.view.IDateCellViewDrawer;
+import com.p_v.flexiblecalendar.view.ImplDateCellViewDrawer;
 import com.p_v.flexiblecalendar.view.MonthDisplayUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -64,7 +64,7 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
     /**
      * cell view drawer.
      */
-    private IDateCellViewDrawer cellViewDrawer;
+    private ImplDateCellViewDrawer cellViewDrawer;
     /**
      * show dates outside month.
      */
@@ -189,32 +189,8 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
         if (isWithinCurrentMonth) {
             //set to REGULAR if is within current month
             cellType = BaseCellView.REGULAR;
-            if (disableAutoDateSelection) {
-                if (userSelectedDateItem != null && userSelectedDateItem.getYear() == year
-                        && userSelectedDateItem.getMonth() == localMonth
-                        && userSelectedDateItem.getDay() == day) {
-                    //selected
-                    cellType = BaseCellView.SELECTED;
-                }
-            } else {
-                if (selectedItem != null && selectedItem.getYear() == year
-                        && selectedItem.getMonth() == localMonth
-                        && selectedItem.getDay() == day) {
-                    //selected
-                    cellType = BaseCellView.SELECTED;
-                }
-            }
-            if (calendar.get(Calendar.YEAR) == year
-                    && calendar.get(Calendar.MONTH) == localMonth
-                    && calendar.get(Calendar.DAY_OF_MONTH) == day) {
-                if (cellType == BaseCellView.SELECTED) {
-                    //today and selected
-                    cellType = BaseCellView.SELECTED_TODAY;
-                } else {
-                    //today
-                    cellType = BaseCellView.TODAY;
-                }
-            }
+            checkOne(localMonth, day, cellType);
+            checkTwo(localMonth, day, cellType);
         }
 
         BaseCellView cellView = cellViewDrawer.getCellView(position, convertView, parent, cellType);
@@ -227,6 +203,40 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
         }
         drawDateCell(cellView, day, cellType);
         return cellView;
+    }
+
+    private int checkTwo(int localMonth, int day, int cellType) {
+        if (calendar.get(Calendar.YEAR) == year
+                && calendar.get(Calendar.MONTH) == localMonth
+                && calendar.get(Calendar.DAY_OF_MONTH) == day) {
+            if (cellType == BaseCellView.SELECTED) {
+                //today and selected
+                cellType = BaseCellView.SELECTED_TODAY;
+            } else {
+                //today
+                cellType = BaseCellView.TODAY;
+            }
+        }
+        return cellType;
+    }
+
+    private int checkOne(int localMonth, int day, int cellType) {
+        if (disableAutoDateSelection) {
+            if (userSelectedDateItem != null && userSelectedDateItem.getYear() == year
+                    && userSelectedDateItem.getMonth() == localMonth
+                    && userSelectedDateItem.getDay() == day) {
+                //selected
+                cellType = BaseCellView.SELECTED;
+            }
+        } else {
+            if (selectedItem != null && selectedItem.getYear() == year
+                    && selectedItem.getMonth() == localMonth
+                    && selectedItem.getDay() == day) {
+                //selected
+                cellType = BaseCellView.SELECTED;
+            }
+        }
+        return cellType;
     }
 
     /**
@@ -266,33 +276,37 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
                     cellView.addState(BaseCellView.STATE_REGULAR);
             }
         } else {
-            if (showDatesOutsideMonth) {
-                cellView.setText(String.valueOf(day));
-                cellView.setTextSize(50);
-                cellView.setTextColor(Color.WHITE);
-                cellView.setWidth(200);
-                int[] temp = new int[2];
-                //date outside month and less than equal to 12 means it belongs to next month otherwise previous
-                if (day <= 12) {
-                    FlexibleCalendarHelper.nextMonth(year, month, temp);
-                } else {
-                    FlexibleCalendarHelper.previousMonth(year, month, temp);
+            checkThree(cellView, day);
+        }
+    }
 
-                }
-                cellView.setClickedListener(new DateClickListener(day, temp[1], temp[0]));
-
-                if (decorateDatesOutsideMonth && monthEventFetcher != null) {
-                    cellView.setEvents(monthEventFetcher.getEventsForTheDay(temp[0], temp[1], day));
-                }
-
-                cellView.addState(BaseCellView.STATE_OUTSIDE_MONTH);
+    private void checkThree(BaseCellView cellView, int day) {
+        if (showDatesOutsideMonth) {
+            cellView.setText(String.valueOf(day));
+            cellView.setTextSize(50);
+            cellView.setTextColor(Color.WHITE);
+            cellView.setWidth(200);
+            int[] temp = new int[2];
+            //date outside month and less than equal to 12 means it belongs to next month otherwise previous
+            if (day <= 12) {
+                FlexibleCalendarHelper.nextMonth(year, month, temp);
             } else {
-                cellView.setText(null);
-                cellView.setTextSize(50);
-                cellView.setTextColor(Color.WHITE);
-                cellView.setWidth(200);
-                cellView.setClickedListener(null);
+                FlexibleCalendarHelper.previousMonth(year, month, temp);
+
             }
+            cellView.setClickedListener(new DateClickListener(day, temp[1], temp[0]));
+
+            if (decorateDatesOutsideMonth && monthEventFetcher != null) {
+                cellView.setEvents(monthEventFetcher.getEventsForTheDay(temp[0], temp[1], day));
+            }
+
+            cellView.addState(BaseCellView.STATE_OUTSIDE_MONTH);
+        } else {
+            cellView.setText(null);
+            cellView.setTextSize(50);
+            cellView.setTextColor(Color.WHITE);
+            cellView.setWidth(200);
+            cellView.setClickedListener(null);
         }
     }
 
@@ -365,7 +379,7 @@ class FlexibleCalendarGridAdapter extends BaseItemProvider {
      *
      * @param cellViewDrawer cellviewdrawer
      */
-    public void setCellViewDrawer(IDateCellViewDrawer cellViewDrawer) {
+    public void setCellViewDrawer(ImplDateCellViewDrawer cellViewDrawer) {
         this.cellViewDrawer = cellViewDrawer;
     }
 

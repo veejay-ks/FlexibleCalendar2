@@ -327,7 +327,7 @@ public class FlexibleCalendarView extends DirectionalLayout implements
 
         // set user selected date item
         if (disableAutoDateSelection) {
-            this.userSelectedItem = selectedItem.clone();
+            this.userSelectedItem = SelectedDateItem.newInstance(selectedItem);
         }
 
         if (onDateClickListener != null) {
@@ -374,9 +374,9 @@ public class FlexibleCalendarView extends DirectionalLayout implements
      */
     public SelectedDateItem getSelectedDateItem() {
         if (disableAutoDateSelection) {
-            return userSelectedItem == null ? null : userSelectedItem.clone();
+            return userSelectedItem == null ? null : SelectedDateItem.newInstance(userSelectedItem);
         }
-        return selectedDateItem.clone();
+        return SelectedDateItem.newInstance(selectedDateItem);
     }
 
     /**
@@ -537,7 +537,7 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         selectedDateItem.setYear(cal.get(Calendar.YEAR));
 
         if (disableAutoDateSelection) {
-            this.userSelectedItem = selectedDateItem.clone();
+            this.userSelectedItem = SelectedDateItem.newInstance(selectedDateItem);
         }
         //check has to go left side or right
         int monthDifference = FlexibleCalendarHelper
@@ -643,7 +643,7 @@ public class FlexibleCalendarView extends DirectionalLayout implements
         selectedDateItem.setYear(newYear);
 
         if (disableAutoDateSelection) {
-            this.userSelectedItem = selectedDateItem.clone();
+            this.userSelectedItem = SelectedDateItem.newInstance(selectedDateItem);
         }
 
         if (monthDifference != 0) {

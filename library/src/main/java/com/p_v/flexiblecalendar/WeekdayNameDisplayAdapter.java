@@ -7,7 +7,7 @@ import ohos.agp.render.layoutboost.LayoutBoost;
 import ohos.agp.utils.Color;
 import ohos.app.Context;
 import com.p_v.flexiblecalendar.view.BaseCellView;
-import com.p_v.flexiblecalendar.view.IWeekCellViewDrawer;
+import com.p_v.flexiblecalendar.view.ImplWeekCellViewDrawer;
 import java.text.DateFormatSymbols;
 
 /**
@@ -19,7 +19,7 @@ public class WeekdayNameDisplayAdapter extends BaseItemProvider {
     /**
      * cellViewDrawer.
      */
-    private IWeekCellViewDrawer cellViewDrawer;
+    private ImplWeekCellViewDrawer cellViewDrawer;
     /**
      * weekDayArray.
      */
@@ -143,7 +143,7 @@ public class WeekdayNameDisplayAdapter extends BaseItemProvider {
      *
      * @param cellView cellView
      */
-    public void setCellView(final IWeekCellViewDrawer cellView) {
+    public void setCellView(final ImplWeekCellViewDrawer cellView) {
         this.cellViewDrawer = cellView;
     }
 
@@ -152,7 +152,7 @@ public class WeekdayNameDisplayAdapter extends BaseItemProvider {
      *
      * @return cell view
      */
-    public IWeekCellViewDrawer getCellViewDrawer() {
+    public ImplWeekCellViewDrawer getCellViewDrawer() {
         return cellViewDrawer;
     }
 

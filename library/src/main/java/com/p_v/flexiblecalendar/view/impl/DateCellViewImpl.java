@@ -2,7 +2,7 @@ package com.p_v.flexiblecalendar.view.impl;
 
 import com.p_v.flexiblecalendar.FlexibleCalendarView;
 import com.p_v.flexiblecalendar.view.BaseCellView;
-import com.p_v.flexiblecalendar.view.IDateCellViewDrawer;
+import com.p_v.flexiblecalendar.view.ImplDateCellViewDrawer;
 import ohos.agp.components.Component;
 import ohos.agp.components.ComponentContainer;
 import ohos.hiviewdfx.HiLog;
@@ -13,7 +13,7 @@ import ohos.hiviewdfx.HiLogLabel;
  *
  * @author p-v
  */
-public class DateCellViewImpl implements IDateCellViewDrawer {
+public class DateCellViewImpl implements ImplDateCellViewDrawer {
     /**
      * TYPE.
      */

@@ -7,7 +7,7 @@ import ohos.agp.components.ComponentContainer;
  * IWeekCellViewDrawer.
  * @author p-v
  */
-public interface IWeekCellViewDrawer extends ICellViewDrawer {
+public interface ImplWeekCellViewDrawer extends ImplCellViewDrawer {
     /**
      * Week Cell view.
      *

@@ -9,8 +9,8 @@ import ohos.agp.database.DataSetSubscriber;
 import ohos.agp.render.layoutboost.LayoutBoost;
 import ohos.app.Context;
 import com.p_v.flexiblecalendar.entity.SelectedDateItem;
-import com.p_v.flexiblecalendar.view.ICellViewDrawer;
-import com.p_v.flexiblecalendar.view.IDateCellViewDrawer;
+import com.p_v.flexiblecalendar.view.ImplCellViewDrawer;
+import com.p_v.flexiblecalendar.view.ImplDateCellViewDrawer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
     /**
      * cell View Drawer.
      */
-    private IDateCellViewDrawer cellViewDrawer;
+    private ImplDateCellViewDrawer cellViewDrawer;
     /**
      * show dates outside month.
      */
@@ -239,7 +239,7 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
      *
      * @return cellViewDrawer
      */
-    public ICellViewDrawer getCellViewDrawer() {
+    public ImplCellViewDrawer getCellViewDrawer() {
         return cellViewDrawer;
     }
 
@@ -248,7 +248,7 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
      *
      * @param cellViewDrawer cellViewDrawer
      */
-    public void setCellViewDrawer(IDateCellViewDrawer cellViewDrawer) {
+    public void setCellViewDrawer(ImplDateCellViewDrawer cellViewDrawer) {
         this.cellViewDrawer = cellViewDrawer;
     }
 

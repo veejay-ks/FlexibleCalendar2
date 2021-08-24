@@ -10,6 +10,7 @@ import ohos.agp.window.dialog.ToastDialog;
 import com.p_v.flexiblecalendar.FlexibleCalendarView;
 import com.p_v.flexiblecalendar.view.BaseCellView;
 import com.p_v.flexiblecalendarexample.ResourceTable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,32 +73,32 @@ public class CalendarActivity3 extends AbilitySlice {
         calendarView.setMonthViewHorizontalSpacing(10);
         calendarView.setMonthViewVerticalSpacing(10);
         calendarView.setOnMonthChangeListener((int year, int month, @FlexibleCalendarView.Direction int direction) -> {
-                ToastDialog toastDialog = new ToastDialog(getContext());
-                toastDialog.setText(year + "" + month + 1);
-                toastDialog.show();
+            ToastDialog toastDialog = new ToastDialog(getContext());
+            toastDialog.setText(year + "" + month + 1);
+            toastDialog.show();
         });
 
         calendarView.setCalendarView(new FlexibleCalendarView.CalendarView() {
             @Override
             public BaseCellView getCellView(final int position, final Component convertView
-                                            , final ComponentContainer parent, final int cellType) {
+                    , final ComponentContainer parent, final int cellType) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter inflater = LayoutScatter.getInstance(CalendarActivity3.this);
                     cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_date_cell_view, parent
-                                , false);
+                            , false);
                 }
                 return cellView;
             }
 
             @Override
             public BaseCellView getWeekdayCellView(final int position, final Component convertView
-                                                   , final ComponentContainer parent) {
+                    , final ComponentContainer parent) {
                 BaseCellView cellView = (BaseCellView) convertView;
                 if (cellView == null) {
                     LayoutScatter inflater = LayoutScatter.getInstance(CalendarActivity3.this);
                     cellView = (BaseCellView) inflater.parse(ResourceTable.Layout_calendar3_week_cell_view, parent
-                                , false);
+                            , false);
                 }
                 return cellView;
             }
@@ -109,28 +110,32 @@ public class CalendarActivity3 extends AbilitySlice {
         });
 
         calendarView.setEventDataProvider((int year, int month, int day) -> {
-                return getEvents(year, month, day);
+            return getEvents(year, month, day);
         });
 
         findComponentById(ResourceTable.Id_update_events_button).setClickedListener(component -> {
-                List<CustomEvent> colorLst1 = new ArrayList<>();
-                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_red_dark));
-                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_blue_light));
-                colorLst1.add(new CustomEvent(ResourceTable.Color_holo_purple));
-                eventMap.put(2, colorLst1);
-                calendarView.refresh();
+            List<CustomEvent> colorLst1 = new ArrayList<>();
+            colorLst1.add(new CustomEvent(ResourceTable.Color_holo_red_dark));
+            colorLst1.add(new CustomEvent(ResourceTable.Color_holo_blue_light));
+            colorLst1.add(new CustomEvent(ResourceTable.Color_holo_purple));
+            eventMap.put(2, colorLst1);
+            calendarView.refresh();
         });
         DatePicker datePicker = (DatePicker) findComponentById(ResourceTable.Id_date_picker);
         datePicker.setValueChangedListener((DatePicker datePicking, int year, int monthOfYear, int dayOfMonth) -> {
-                calendarView.selectDate(year, monthOfYear, dayOfMonth);
+            calendarView.selectDate(year, monthOfYear, dayOfMonth);
         });
     }
 
     /**
      * get events.
-     * @param year year
+     *
+     * @param year  year
+     *
      * @param month month
-     * @param day day
+     *
+     * @param day   day
+     *
      * @return list
      */
     public List<CustomEvent> getEvents(final int year, final int month, final int day) {

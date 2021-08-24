@@ -34,7 +34,7 @@ public class InfiniteViewPager extends PageSlider {
     /**
      * set provider.
      *
-     * @param provider
+     * @param provider provider
      */
     @Override
     public void setProvider(final PageSliderProvider provider) {
