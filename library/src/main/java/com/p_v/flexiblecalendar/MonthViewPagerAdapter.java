@@ -260,7 +260,7 @@ public class MonthViewPagerAdapter extends PageSliderProvider {
      * @param verticalSpacing verticalSpacing
      */
     public void setSpacing(int horizontalSpacing, int verticalSpacing) {
-
+        throw new UnsupportedOperationException();
     }
 
     /**
