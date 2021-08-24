@@ -111,9 +111,7 @@ public class MonthDisplayUtil {
     /**
      * get offset.
      *
-     * @return The offset from displaying everything starting on the very first
-     * box.  For example, if the calendar is set to display the first day of
-     * the week as Sunday, and the month starts on a Wednesday, the offset is 3.
+     * @return The offset from displaying everything starting on the very first box.
      */
     public int getOffset() {
         return offset;
@@ -123,8 +121,7 @@ public class MonthDisplayUtil {
      * get digits.
      *
      * @param row Which row (0-5).
-     * @return the digits of the month to display in one
-     * of the 6 rows of a calendar month display.
+     * @return the digits of the month to display in one of the 6 rows of a calendar month display.
      */
     public int[] getDigitsForRow(final int row) {
         if (row < 0 || row > 5) {
