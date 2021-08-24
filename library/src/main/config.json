@@ -15,7 +15,7 @@
   "deviceConfig": {
   },
   "module": {
-    "package": "com.p_v.flexiblecalendar",
+    "package": "com.pv.flexiblecalendar",
     "deviceType": [
       "phone"
     ],
